@@ -14,29 +14,49 @@
 
     <!-- Instructions Section -->
     <div class="instructions-section mb-5">
-        <h2 class="section-title">How It Works</h2>
-        <div class="instruction-steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Prepare CSV File</h3>
-                    <p>Create a CSV file with columns for each card field</p>
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-info-circle me-2"></i>
+                How It Works
+            </h2>
+            <div class="instruction-steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-file-csv"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>📋 Prepare CSV File</h3>
+                        <p>Create a CSV file with columns for each card field. Include name, job title, company, and contact information for each person.</p>
+                        <div class="step-details">
+                            <small><i class="fas fa-lightbulb text-warning me-1"></i>Tip: Use our template below to get started quickly</small>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Upload & Configure</h3>
-                    <p>Upload your CSV and select export format</p>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>⚙️ Upload & Configure</h3>
+                        <p>Upload your CSV file and select your preferred export format (PNG images or PDF documents).</p>
+                        <div class="step-details">
+                            <small><i class="fas fa-shield-alt text-success me-1"></i>Your data is processed securely and deleted after download</small>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Download ZIP</h3>
-                    <p>Get all generated cards in a ZIP archive</p>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>📦 Download ZIP</h3>
+                        <p>Get all generated business cards organized in a convenient ZIP archive, ready for distribution or printing.</p>
+                        <div class="step-details">
+                            <small><i class="fas fa-compress-arrows-alt text-info me-1"></i>Automatically compressed for faster download</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,55 +64,102 @@
 
     <!-- CSV Template Section -->
     <div class="template-section mb-5">
-        <h2 class="section-title">CSV Template</h2>
-        <div class="template-info">
-            <p>Your CSV file should include the following columns:</p>
-            
-            <div class="csv-columns">
-                <div class="column-group">
-                    <h4>Required Columns</h4>
-                    <div class="column-list">
-                        <span class="column-tag required">name</span>
-                    </div>
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-table me-2"></i>
+                CSV Template & Format
+            </h2>
+            <div class="template-info">
+                <div class="info-box mb-4">
+                    <i class="fas fa-info-circle text-primary"></i>
+                    <p><strong>📊 Column Structure:</strong> Your CSV file should include the following columns for best results:</p>
                 </div>
                 
-                <div class="column-group">
-                    <h4>Optional Columns</h4>
-                    <div class="column-list">
-                        <span class="column-tag">job_title</span>
-                        <span class="column-tag">company</span>
-                        <span class="column-tag">email</span>
-                        <span class="column-tag">phone</span>
-                        <span class="column-tag">website</span>
-                        <span class="column-tag">address</span>
-                        <span class="column-tag">social_platform</span>
-                        <span class="column-tag">social_handle</span>
-                        <span class="column-tag">template</span>
-                        <span class="column-tag">color_scheme</span>
-                        <span class="column-tag">font_family</span>
-                        <span class="column-tag">include_qr</span>
+                <div class="csv-columns">
+                    <div class="column-group">
+                        <h4><i class="fas fa-star text-warning me-2"></i>✅ Required Columns</h4>
+                        <div class="column-list">
+                            <span class="column-tag required">
+                                <i class="fas fa-user me-1"></i>name
+                            </span>
+                        </div>
+                        <small class="text-muted">📝 This is the only mandatory field - all others are optional</small>
+                    </div>
+                    
+                    <div class="column-group">
+                        <h4><i class="fas fa-plus-circle text-info me-2"></i>🔧 Optional Columns</h4>
+                        <div class="column-list">
+                            <span class="column-tag">
+                                <i class="fas fa-briefcase me-1"></i>job_title
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-building me-1"></i>company
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-envelope me-1"></i>email
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-phone me-1"></i>phone
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-globe me-1"></i>website
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-map-marker-alt me-1"></i>address
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-share-alt me-1"></i>social_platform
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-at me-1"></i>social_handle
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-palette me-1"></i>template
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-paint-brush me-1"></i>color_scheme
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-font me-1"></i>font_family
+                            </span>
+                            <span class="column-tag">
+                                <i class="fas fa-qrcode me-1"></i>include_qr
+                            </span>
+                        </div>
+                        <small class="text-muted">🎨 Customize design and add contact details as needed</small>
                     </div>
                 </div>
             </div>
-        </div>
         
-        <!-- Sample CSV -->
-        <div class="csv-sample">
-            <h4>Sample CSV Content:</h4>
-            <div class="code-block">
-                <pre><code>name,job_title,company,email,phone,template,color_scheme
+            <!-- Sample CSV -->
+            <div class="csv-sample">
+                <h4><i class="fas fa-code me-2"></i>📄 Sample CSV Content:</h4>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span><i class="fas fa-file-csv me-2"></i>business_cards.csv</span>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="copyToClipboard()">
+                            <i class="fas fa-copy me-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre><code>name,job_title,company,email,phone,template,color_scheme
 John Doe,Senior Developer,Tech Corp,john@techcorp.com,555-0123,modern,blue
 Jane Smith,Marketing Manager,Creative Co,jane@creative.com,555-0456,elegant,purple
 Bob Johnson,CEO,Startup Inc,bob@startup.com,555-0789,executive,black</code></pre>
+                </div>
             </div>
-        </div>
-        
-        <!-- Download Template Button -->
-        <div class="template-actions">
-            <button class="btn btn-outline-primary" onclick="downloadTemplate()">
-                <i class="fas fa-download me-2"></i>
-                Download Template
-            </button>
+            
+            <!-- Download Template Button -->
+            <div class="template-actions">
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="downloadTemplate()">
+                        <i class="fas fa-download me-2"></i>
+                        📥 Download CSV Template
+                    </button>
+                    <div class="action-info">
+                        <small><i class="fas fa-magic text-success me-1"></i>Pre-filled with sample data to get you started instantly</small>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -343,6 +410,31 @@ Bob Johnson,CEO,Startup Inc,bob@startup.com,555-0789,https://startup.com,"789 In
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
+}
+
+// Copy CSV content to clipboard
+function copyToClipboard() {
+    const csvContent = `name,job_title,company,email,phone,template,color_scheme
+John Doe,Senior Developer,Tech Corp,john@techcorp.com,555-0123,modern,blue
+Jane Smith,Marketing Manager,Creative Co,jane@creative.com,555-0456,elegant,purple
+Bob Johnson,CEO,Startup Inc,bob@startup.com,555-0789,executive,black`;
+    
+    navigator.clipboard.writeText(csvContent).then(() => {
+        // Show success notification
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+        button.classList.add('btn-success');
+        button.classList.remove('btn-outline-secondary');
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('btn-success');
+            button.classList.add('btn-outline-secondary');
+        }, 2000);
+    }).catch(() => {
+        alert('Unable to copy to clipboard. Please copy manually.');
+    });
 }
 
 // Touch feedback for interactive elements
