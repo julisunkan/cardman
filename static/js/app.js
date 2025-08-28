@@ -4,7 +4,6 @@ class MobileCardApp {
         this.init();
         this.registerServiceWorker();
         this.setupEventListeners();
-        this.updateStatusBar();
         this.initializeTouch();
     }
 
@@ -61,21 +60,6 @@ class MobileCardApp {
         this.setupPullToRefresh();
     }
 
-    updateStatusBar() {
-        const timeElement = document.getElementById('current-time');
-        if (timeElement) {
-            const updateTime = () => {
-                const now = new Date();
-                timeElement.textContent = now.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            };
-            
-            updateTime();
-            setInterval(updateTime, 1000);
-        }
-    }
 
     initializeTouch() {
         // Add touch ripple effect
