@@ -348,53 +348,10 @@ class MobileCardApp {
     }
 
     initPWA() {
-        // Add to home screen prompt
-        let deferredPrompt;
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            this.showInstallPrompt();
-        });
-        
+        // PWA functionality without install prompt
         window.addEventListener('appinstalled', () => {
             this.showNotification('App installed successfully!', 'success');
-            deferredPrompt = null;
         });
-    }
-
-    showInstallPrompt() {
-        const installButton = document.createElement('button');
-        installButton.className = 'btn btn-primary btn-sm install-prompt';
-        installButton.innerHTML = '<i class="fas fa-download"></i> Install App';
-        installButton.style.cssText = `
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            z-index: 1050;
-            border-radius: 25px;
-            padding: 10px 15px;
-            font-size: 12px;
-        `;
-        
-        installButton.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-                deferredPrompt = null;
-                installButton.remove();
-            }
-        });
-        
-        document.body.appendChild(installButton);
-        
-        // Auto-hide after 10 seconds
-        setTimeout(() => {
-            if (installButton.parentNode) {
-                installButton.remove();
-            }
-        }, 10000);
     }
 
     checkForUpdates() {
