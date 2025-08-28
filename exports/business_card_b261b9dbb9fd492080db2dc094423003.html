@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Card - Olasunkanmi Agbajelola</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .card-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .card-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .contact-info {
+            padding: 20px;
+        }
+        .contact-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .contact-item:hover {
+            background: #e9ecef;
+        }
+        .label {
+            font-weight: bold;
+            color: #6c757d;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .value {
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <img src="card_7762e2eb2f29479cb05d86c3a6f4328c.png" alt="Business Card" class="card-image">
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+
+            <div class="contact-item" onclick="copyToClipboard('Olasunkanmi Agbajelola')">
+                <div class="label">Name</div>
+                <div class="value">Olasunkanmi Agbajelola</div>
+            </div>
+
+            <div class="contact-item" onclick="copyToClipboard('Software Developer')">
+                <div class="label">Job Title</div>
+                <div class="value">Software Developer</div>
+            </div>
+
+            <div class="contact-item" onclick="copyToClipboard('DigitalSkeleton Services')">
+                <div class="label">Company</div>
+                <div class="value">DigitalSkeleton Services</div>
+            </div>
+
+            <div class="contact-item" onclick="copyToClipboard('support@digitalskeleton.com.ng')">
+                <div class="label">Email</div>
+                <div class="value">support@digitalskeleton.com.ng</div>
+            </div>
+
+            <div class="contact-item" onclick="copyToClipboard('+2347084039583')">
+                <div class="label">Phone</div>
+                <div class="value">+2347084039583</div>
+            </div>
+
+            <div class="contact-item" onclick="copyToClipboard('https://digitalskeleton.com.ng')">
+                <div class="label">Website</div>
+                <div class="value">https://digitalskeleton.com.ng</div>
+            </div>
+
+            <div class="contact-item" onclick="copyToClipboard('Plot 10, Block C1, Kuponiyi Estate, Adegbayi, New Ife Road')">
+                <div class="label">Address</div>
+                <div class="value">Plot 10, Block C1, Kuponiyi Estate, Adegbayi, New Ife Road</div>
+            </div>
+
+            <div class="contact-item">
+                <div class="label">linkedin</div>
+                <div class="value">julisunkan</div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied to clipboard: ' + text);
+            });
+        }
+    </script>
+</body>
+</html>
