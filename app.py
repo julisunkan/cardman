@@ -17,6 +17,11 @@ app.config['EXPORT_FOLDER'] = 'exports'
 # Ensure upload and export directories exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['EXPORT_FOLDER'], exist_ok=True)
+os.makedirs('static/previews', exist_ok=True)
+
+# Import cleanup service and start it
+from cleanup_task import init_cleanup_service
+init_cleanup_service()
 
 # Import routes after app creation
 import routes
