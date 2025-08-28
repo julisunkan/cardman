@@ -397,6 +397,245 @@ END:VCARD"""
         
         return img
 
+    def creative_artistic_template(self, card_data, colors):
+        """Creative artistic template with bold design elements"""
+        img = Image.new('RGB', (self.card_width, self.card_height), 'white')
+        draw = ImageDraw.Draw(img)
+        
+        # Creative background with geometric shapes
+        for i in range(5):
+            x = i * 150
+            y = i * 80
+            size = 100 + i * 20
+            alpha = int(255 * (0.8 - i * 0.15))
+            color = colors['accent'] + f'{alpha:02x}'
+            draw.ellipse([x, y, x + size, y + size], fill=color)
+        
+        # Artistic name placement
+        name_font = self.get_professional_font('sans_modern', 64, 'bold')
+        draw.text((self.safe_zone, 120), card_data.get('name', ''), 
+                 fill=colors['primary'], font=name_font)
+        
+        # Creative title styling
+        title_font = self.get_professional_font('sans_modern', 32)
+        draw.text((self.safe_zone, 200), card_data.get('job_title', ''), 
+                 fill=colors['accent'], font=title_font)
+        
+        # Company
+        company_font = self.get_professional_font('sans_modern', 26)
+        draw.text((self.safe_zone, 250), card_data.get('company', ''), 
+                 fill=colors['text'], font=company_font)
+        
+        # Contact info with creative layout
+        contact_font = self.get_professional_font('sans_modern', 22)
+        contact_y = 320
+        
+        for field in ['email', 'phone', 'website']:
+            if card_data.get(field):
+                draw.text((self.safe_zone, contact_y), card_data[field], 
+                         fill=colors['text'], font=contact_font)
+                contact_y += 35
+        
+        return img
+
+    def luxury_foil_template(self, card_data, colors):
+        """Luxury template with foil effect simulation"""
+        img = Image.new('RGB', (self.card_width, self.card_height), colors['secondary'])
+        draw = ImageDraw.Draw(img)
+        
+        # Luxury border with foil effect
+        border_gradient = self.create_gradient(self.card_width, 20, 
+                                             colors['metallic'], colors['accent'])
+        img.paste(border_gradient, (0, 0))
+        img.paste(border_gradient, (0, self.card_height - 20))
+        
+        # Luxury name with foil effect
+        name_font = self.get_professional_font('serif_elegant', 60, 'bold')
+        name_text = card_data.get('name', '').upper()
+        
+        # Create foil shadow effect
+        shadow_offset = 3
+        draw.text((self.safe_zone + shadow_offset, 80 + shadow_offset), name_text, 
+                 fill=colors['dark'], font=name_font)
+        draw.text((self.safe_zone, 80), name_text, fill=colors['metallic'], font=name_font)
+        
+        # Luxury details
+        title_font = self.get_professional_font('serif_elegant', 28)
+        draw.text((self.safe_zone, 160), card_data.get('job_title', ''), 
+                 fill=colors['primary'], font=title_font)
+        
+        company_font = self.get_professional_font('serif_elegant', 26)
+        draw.text((self.safe_zone, 200), card_data.get('company', ''), 
+                 fill=colors['text'], font=company_font)
+        
+        # Luxury contact information
+        contact_font = self.get_professional_font('sans_modern', 20)
+        contact_y = 270
+        
+        for field in ['email', 'phone', 'website']:
+            if card_data.get(field):
+                draw.text((self.safe_zone, contact_y), card_data[field], 
+                         fill=colors['text'], font=contact_font)
+                contact_y += 30
+        
+        return img
+
+    def tech_neon_template(self, card_data, colors):
+        """Tech template with neon-inspired effects"""
+        img = Image.new('RGB', (self.card_width, self.card_height), '#0a0a0a')
+        draw = ImageDraw.Draw(img)
+        
+        # Tech grid pattern
+        grid_size = 30
+        for x in range(0, self.card_width, grid_size):
+            draw.line([(x, 0), (x, self.card_height)], fill='#1a1a1a', width=1)
+        for y in range(0, self.card_height, grid_size):
+            draw.line([(0, y), (self.card_width, y)], fill='#1a1a1a', width=1)
+        
+        # Neon accent
+        neon_color = colors['accent']
+        draw.rectangle([0, 0, self.card_width, 10], fill=neon_color)
+        
+        # Tech name styling
+        name_font = self.get_professional_font('mono_tech', 56, 'bold')
+        draw.text((self.safe_zone, 60), card_data.get('name', ''), 
+                 fill='white', font=name_font)
+        
+        # Tech details
+        title_font = self.get_professional_font('mono_tech', 24)
+        draw.text((self.safe_zone, 130), card_data.get('job_title', ''), 
+                 fill=neon_color, font=title_font)
+        
+        company_font = self.get_professional_font('mono_tech', 22)
+        draw.text((self.safe_zone, 170), card_data.get('company', ''), 
+                 fill='white', font=company_font)
+        
+        # Tech contact layout
+        contact_font = self.get_professional_font('mono_tech', 18)
+        contact_y = 220
+        
+        for field in ['email', 'phone', 'website']:
+            if card_data.get(field):
+                draw.text((self.safe_zone, contact_y), f"> {card_data[field]}", 
+                         fill='#cccccc', font=contact_font)
+                contact_y += 30
+        
+        return img
+
+    def vintage_letterpress_template(self, card_data, colors):
+        """Vintage letterpress-inspired design"""
+        img = Image.new('RGB', (self.card_width, self.card_height), '#f5f1e8')
+        draw = ImageDraw.Draw(img)
+        
+        # Vintage texture effect
+        for i in range(100):
+            x = i * 10
+            y = (i * 7) % self.card_height
+            alpha = int(255 * 0.1)
+            draw.ellipse([x, y, x + 3, y + 3], fill=colors['dark'] + f'{alpha:02x}')
+        
+        # Vintage border
+        border_color = colors['dark']
+        draw.rectangle([10, 10, self.card_width - 10, self.card_height - 10], 
+                      outline=border_color, width=3)
+        
+        # Letterpress name effect
+        name_font = self.get_professional_font('serif_elegant', 52, 'bold')
+        name_text = card_data.get('name', '').upper()
+        
+        # Create letterpress shadow
+        shadow_offset = 2
+        draw.text((self.safe_zone + shadow_offset, 80 + shadow_offset), name_text, 
+                 fill='#e0ddd4', font=name_font)
+        draw.text((self.safe_zone, 80), name_text, fill=colors['primary'], font=name_font)
+        
+        # Vintage styling
+        title_font = self.get_professional_font('serif_elegant', 26)
+        draw.text((self.safe_zone, 150), card_data.get('job_title', ''), 
+                 fill=colors['accent'], font=title_font)
+        
+        company_font = self.get_professional_font('serif_elegant', 24)
+        draw.text((self.safe_zone, 190), card_data.get('company', ''), 
+                 fill=colors['text'], font=company_font)
+        
+        # Vintage contact info
+        contact_font = self.get_professional_font('serif_elegant', 20)
+        contact_y = 250
+        
+        for field in ['email', 'phone', 'website']:
+            if card_data.get(field):
+                draw.text((self.safe_zone, contact_y), card_data[field], 
+                         fill=colors['text'], font=contact_font)
+                contact_y += 30
+        
+        return img
+
+    def geometric_modern_template(self, card_data, colors):
+        """Modern geometric design"""
+        img = Image.new('RGB', (self.card_width, self.card_height), 'white')
+        draw = ImageDraw.Draw(img)
+        
+        # Geometric shapes
+        triangle_points = [(0, 0), (200, 0), (100, 150)]
+        draw.polygon(triangle_points, fill=colors['accent'] + '80')
+        
+        # Geometric accent
+        draw.rectangle([self.card_width - 150, 0, self.card_width, 100], 
+                      fill=colors['primary'])
+        
+        # Modern typography
+        name_font = self.get_professional_font('sans_modern', 58, 'bold')
+        draw.text((self.safe_zone, 200), card_data.get('name', ''), 
+                 fill=colors['text'], font=name_font)
+        
+        title_font = self.get_professional_font('sans_modern', 28)
+        draw.text((self.safe_zone, 280), card_data.get('job_title', ''), 
+                 fill=colors['accent'], font=title_font)
+        
+        company_font = self.get_professional_font('sans_modern', 26)
+        draw.text((self.safe_zone, 320), card_data.get('company', ''), 
+                 fill=colors['text'], font=company_font)
+        
+        # Contact info
+        contact_font = self.get_professional_font('sans_modern', 20)
+        contact_y = 380
+        
+        for field in ['email', 'phone', 'website']:
+            if card_data.get(field):
+                draw.text((self.safe_zone, contact_y), card_data[field], 
+                         fill=colors['text'], font=contact_font)
+                contact_y += 30
+        
+        return img
+
+    def photography_showcase_template(self, card_data, colors):
+        """Template for photographers and visual professionals"""
+        return self.minimalist_pro_template(card_data, colors)  # Use minimalist as base
+
+    def corporate_elite_template(self, card_data, colors):
+        """Elite corporate template"""
+        return self.executive_premium_template(card_data, colors)  # Use executive as base
+
+    def startup_dynamic_template(self, card_data, colors):
+        """Dynamic startup template"""
+        return self.modern_gradient_template(card_data, colors)  # Use modern gradient as base
+
+    def healthcare_clean_template(self, card_data, colors):
+        """Clean healthcare professional template"""
+        return self.minimalist_pro_template(card_data, colors)  # Use minimalist as base
+
+    def legal_traditional_template(self, card_data, colors):
+        """Traditional legal template"""
+        return self.executive_premium_template(card_data, colors)  # Use executive as base
+
+    def real_estate_luxury_template(self, card_data, colors):
+        """Luxury real estate template"""
+        return self.luxury_foil_template(card_data, colors)  # Use luxury foil as base
+
+    def restaurant_elegant_template(self, card_data, colors):
+        """Elegant restaurant template"""
+        return self.vintage_letterpress_template(card_data, colors)  # Use vintage as base
+
     def generate_card(self, card_data):
         """Generate advanced business card"""
         template_name = card_data.get('template', 'executive_premium')
