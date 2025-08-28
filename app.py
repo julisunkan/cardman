@@ -19,7 +19,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['EXPORT_FOLDER'], exist_ok=True)
 
 # Import routes after app creation
-from routes import *
+import routes
 
 if __name__ == '__main__':
     # This is for local development only - in production, gunicorn handles the server
