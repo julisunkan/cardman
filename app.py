@@ -23,8 +23,8 @@ os.makedirs('static/previews', exist_ok=True)
 from cleanup_task import init_cleanup_service
 init_cleanup_service()
 
-# Import routes after app creation
-import routes
+# Import new advanced routes
+import new_routes
 
 if __name__ == '__main__':
     # This is for local development only - in production, gunicorn handles the server

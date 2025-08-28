@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Card - CardGen Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --accent-color: #3182ce;
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        body {
+            background: var(--gradient-bg);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .create-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(49, 130, 206, 0.25);
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .template-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .template-option:hover, .template-option.selected {
+            border-color: var(--accent-color);
+            background: rgba(49, 130, 206, 0.1);
+        }
+        
+        .color-scheme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .color-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            text-align: center;
+        }
+        
+        .color-option:hover, .color-option.selected {
+            border-color: var(--accent-color);
+            background: rgba(49, 130, 206, 0.1);
+        }
+        
+        .color-preview {
+            width: 100%;
+            height: 40px;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--color1), var(--color2));
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            background: #f7fafc;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--accent-color);
+            background: rgba(49, 130, 206, 0.05);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+                <i class="fas fa-id-card me-2"></i>CardGen Pro
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('index') }}">
+                    <i class="fas fa-home me-1"></i>Home
+                </a>
+                <a class="nav-link" href="{{ url_for('batch') }}">
+                    <i class="fas fa-layer-group me-1"></i>Batch
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="create-container">
+        <form action="{{ url_for('save_card_data') }}" method="POST" enctype="multipart/form-data">
+            
+            <!-- Personal Information -->
+            <div class="form-card">
+                <h3 class="section-title">
+                    <i class="fas fa-user"></i>
+                    Personal Information
+                </h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label fw-semibold">Full Name *</label>
+                        <input type="text" class="form-control" id="name" name="name" 
+                               value="{{ card_data.name }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="job_title" class="form-label fw-semibold">Job Title *</label>
+                        <input type="text" class="form-control" id="job_title" name="job_title" 
+                               value="{{ card_data.job_title }}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="company" class="form-label fw-semibold">Company *</label>
+                        <input type="text" class="form-control" id="company" name="company" 
+                               value="{{ card_data.company }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="industry" class="form-label fw-semibold">Industry</label>
+                        <select class="form-select" id="industry" name="industry">
+                            <option value="business" {{ 'selected' if card_data.industry == 'business' }}>Business & Consulting</option>
+                            <option value="technology" {{ 'selected' if card_data.industry == 'technology' }}>Technology</option>
+                            <option value="healthcare" {{ 'selected' if card_data.industry == 'healthcare' }}>Healthcare</option>
+                            <option value="legal" {{ 'selected' if card_data.industry == 'legal' }}>Legal</option>
+                            <option value="finance" {{ 'selected' if card_data.industry == 'finance' }}>Finance</option>
+                            <option value="real_estate" {{ 'selected' if card_data.industry == 'real_estate' }}>Real Estate</option>
+                            <option value="creative" {{ 'selected' if card_data.industry == 'creative' }}>Creative & Design</option>
+                            <option value="restaurant" {{ 'selected' if card_data.industry == 'restaurant' }}>Restaurant & Hospitality</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="form-card">
+                <h3 class="section-title">
+                    <i class="fas fa-address-book"></i>
+                    Contact Information
+                </h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label fw-semibold">Email Address *</label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               value="{{ card_data.email }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label fw-semibold">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" 
+                               value="{{ card_data.phone }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="website" class="form-label fw-semibold">Website</label>
+                        <input type="url" class="form-control" id="website" name="website" 
+                               value="{{ card_data.website }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="address" class="form-label fw-semibold">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" 
+                               value="{{ card_data.address }}">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="notes" class="form-label fw-semibold">Additional Notes</label>
+                    <textarea class="form-control" id="notes" name="notes" rows="2" 
+                              placeholder="Tagline, certifications, or other details">{{ card_data.notes }}</textarea>
+                </div>
+            </div>
+
+            <!-- Design Selection -->
+            <div class="form-card">
+                <h3 class="section-title">
+                    <i class="fas fa-palette"></i>
+                    Design & Template
+                </h3>
+                
+                <label class="form-label fw-semibold">Choose Template</label>
+                <div class="template-grid">
+                    {% for template in templates %}
+                    <div class="template-option" data-template="{{ template }}">
+                        <i class="fas fa-id-card-alt fa-2x mb-2" style="color: var(--accent-color);"></i>
+                        <div class="fw-semibold">{{ template.replace('_', ' ').title() }}</div>
+                        <input type="radio" name="template" value="{{ template }}" 
+                               {{ 'checked' if card_data.template == template }} style="display: none;">
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <label class="form-label fw-semibold mt-4">Color Scheme</label>
+                <div class="color-scheme-grid">
+                    {% for scheme in color_schemes %}
+                    <div class="color-option" data-scheme="{{ scheme }}">
+                        <div class="color-preview" id="color-preview-{{ scheme }}"></div>
+                        <div class="fw-semibold">{{ scheme.replace('_', ' ').title() }}</div>
+                        <input type="radio" name="color_scheme" value="{{ scheme }}" 
+                               {{ 'checked' if card_data.color_scheme == scheme }} style="display: none;">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Logo Upload -->
+            <div class="form-card">
+                <h3 class="section-title">
+                    <i class="fas fa-image"></i>
+                    Logo & Branding
+                </h3>
+                <div class="upload-area">
+                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                    <div class="mb-2">
+                        <label for="logo" class="form-label fw-semibold">Upload Company Logo</label>
+                    </div>
+                    <input type="file" class="form-control" id="logo" name="logo" 
+                           accept=".png,.jpg,.jpeg,.svg,.webp">
+                    <small class="text-muted">Supported formats: PNG, JPG, SVG, WebP (Max 16MB)</small>
+                </div>
+            </div>
+
+            <!-- Advanced Options -->
+            <div class="form-card">
+                <h3 class="section-title">
+                    <i class="fas fa-cogs"></i>
+                    Advanced Options
+                </h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="include_qr" name="include_qr" 
+                                   {{ 'checked' if card_data.include_qr }}>
+                            <label class="form-check-label fw-semibold" for="include_qr">
+                                Include QR Code for Contact Info
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="font_family" class="form-label fw-semibold">Font Style</label>
+                        <select class="form-select" id="font_family" name="font_family">
+                            <option value="sans_modern" {{ 'selected' if card_data.font_family == 'sans_modern' }}>Modern Sans-Serif</option>
+                            <option value="serif_elegant" {{ 'selected' if card_data.font_family == 'serif_elegant' }}>Elegant Serif</option>
+                            <option value="sans_rounded" {{ 'selected' if card_data.font_family == 'sans_rounded' }}>Rounded Sans-Serif</option>
+                            <option value="mono_tech" {{ 'selected' if card_data.font_family == 'mono_tech' }}>Tech Monospace</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-eye me-2"></i>Preview Card
+                </button>
+                <a href="{{ url_for('clear_session') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-refresh me-2"></i>Reset Form
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Template selection
+        document.querySelectorAll('.template-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.template-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        // Color scheme selection
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        // Set initial selections
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mark selected template
+            const selectedTemplate = document.querySelector('input[name="template"]:checked');
+            if (selectedTemplate) {
+                selectedTemplate.closest('.template-option').classList.add('selected');
+            }
+
+            // Mark selected color scheme
+            const selectedScheme = document.querySelector('input[name="color_scheme"]:checked');
+            if (selectedScheme) {
+                selectedScheme.closest('.color-option').classList.add('selected');
+            }
+
+            // Set color previews
+            const colorSchemes = {
+                'executive_navy': ['#1a365d', '#3182ce'],
+                'luxury_gold': ['#744210', '#d69e2e'],
+                'tech_cyan': ['#065f46', '#0d9488'],
+                'creative_purple': ['#553c9a', '#805ad5'],
+                'medical_blue': ['#2c5282', '#3182ce'],
+                'finance_green': ['#22543d', '#38a169'],
+                'law_burgundy': ['#742a2a', '#c53030'],
+                'startup_orange': ['#c05621', '#dd6b20']
+            };
+
+            Object.keys(colorSchemes).forEach(scheme => {
+                const preview = document.getElementById(`color-preview-${scheme}`);
+                if (preview) {
+                    const colors = colorSchemes[scheme];
+                    preview.style.background = `linear-gradient(45deg, ${colors[0]}, ${colors[1]})`;
+                }
+            });
+        });
+
+        // File upload preview
+        document.getElementById('logo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const uploadArea = this.closest('.upload-area');
+                uploadArea.style.borderColor = 'var(--accent-color)';
+                uploadArea.style.background = 'rgba(49, 130, 206, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>

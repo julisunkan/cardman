@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch Create - CardGen Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --accent-color: #3182ce;
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        body {
+            background: var(--gradient-bg);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .batch-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--accent-color);
+            background: rgba(49, 130, 206, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .csv-example {
+            background: #f1f5f9;
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .csv-table {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list i {
+            color: var(--accent-color);
+            margin-right: 0.75rem;
+            width: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+                <i class="fas fa-id-card me-2"></i>CardGen Pro
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('index') }}">
+                    <i class="fas fa-home me-1"></i>Home
+                </a>
+                <a class="nav-link" href="{{ url_for('create') }}">
+                    <i class="fas fa-plus me-1"></i>Create Single
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="batch-container">
+        
+        <!-- Header -->
+        <div class="text-center text-white mb-5">
+            <h1 class="display-5 fw-bold mb-3">Batch Business Card Creator</h1>
+            <p class="lead">Create hundreds of professional business cards from CSV data</p>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="form-card">
+            <h3 class="text-dark mb-4">
+                <i class="fas fa-upload me-2"></i>Upload Your CSV File
+            </h3>
+            
+            <form action="{{ url_for('batch_process') }}" method="POST" enctype="multipart/form-data" id="batchForm">
+                
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h4 class="mb-3">Drag & Drop CSV File or Click to Browse</h4>
+                    <p class="text-muted mb-3">Maximum file size: 50MB</p>
+                    <input type="file" id="csvFile" name="csv_file" accept=".csv" class="d-none" required>
+                    <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('csvFile').click()">
+                        <i class="fas fa-folder-open me-2"></i>Choose File
+                    </button>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <label for="export_format" class="form-label fw-semibold">Export Format</label>
+                        <select class="form-select" id="export_format" name="export_format">
+                            <option value="png">HD PNG Images</option>
+                            <option value="pdf">Premium PDF Files</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary btn-lg w-100" disabled id="submitBtn">
+                            <i class="fas fa-magic me-2"></i>Generate Business Cards
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- CSV Format Guide -->
+        <div class="form-card">
+            <h3 class="text-dark mb-4">
+                <i class="fas fa-table me-2"></i>CSV Format Requirements
+            </h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Required Columns:</h5>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i>name</li>
+                        <li><i class="fas fa-check"></i>job_title</li>
+                        <li><i class="fas fa-check"></i>company</li>
+                        <li><i class="fas fa-check"></i>email</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Optional Columns:</h5>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-plus"></i>phone</li>
+                        <li><i class="fas fa-plus"></i>website</li>
+                        <li><i class="fas fa-plus"></i>address</li>
+                        <li><i class="fas fa-plus"></i>template</li>
+                        <li><i class="fas fa-plus"></i>color_scheme</li>
+                        <li><i class="fas fa-plus"></i>include_qr (true/false)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="csv-example">
+                <h6 class="mb-3">Example CSV Format:</h6>
+                <div class="csv-table">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>job_title</th>
+                                <th>company</th>
+                                <th>email</th>
+                                <th>phone</th>
+                                <th>template</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Smith</td>
+                                <td>CEO</td>
+                                <td>Tech Corp</td>
+                                <td>john@techcorp.com</td>
+                                <td>+1-555-0123</td>
+                                <td>executive_premium</td>
+                            </tr>
+                            <tr>
+                                <td>Sarah Johnson</td>
+                                <td>Designer</td>
+                                <td>Creative Studio</td>
+                                <td>sarah@creative.com</td>
+                                <td>+1-555-0124</td>
+                                <td>creative_artistic</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Pro Tip:</strong> If template or color_scheme columns are not specified, 
+                the system will use professional defaults based on the industry.
+            </div>
+        </div>
+
+        <!-- Available Templates -->
+        <div class="form-card">
+            <h3 class="text-dark mb-4">
+                <i class="fas fa-palette me-2"></i>Available Templates & Color Schemes
+            </h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Premium Templates:</h5>
+                    <ul class="feature-list">
+                        {% for template in templates %}
+                        <li><i class="fas fa-star"></i>{{ template.replace('_', ' ').title() }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Professional Color Schemes:</h5>
+                    <ul class="feature-list">
+                        {% for scheme in color_schemes %}
+                        <li><i class="fas fa-circle" style="color: var(--accent-color);"></i>{{ scheme.replace('_', ' ').title() }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="form-card">
+            <h3 class="text-dark mb-4">
+                <i class="fas fa-rocket me-2"></i>Batch Processing Features
+            </h3>
+            
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="text-center">
+                        <i class="fas fa-lightning-bolt fa-3x text-primary mb-3"></i>
+                        <h5>Lightning Fast</h5>
+                        <p class="text-muted">Process hundreds of cards in minutes with optimized generation</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="text-center">
+                        <i class="fas fa-gem fa-3x text-primary mb-3"></i>
+                        <h5>Consistent Quality</h5>
+                        <p class="text-muted">Professional results with automatic layout optimization</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="text-center">
+                        <i class="fas fa-download fa-3x text-primary mb-3"></i>
+                        <h5>Easy Download</h5>
+                        <p class="text-muted">Get all cards in a single ZIP file with organized naming</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const csvFile = document.getElementById('csvFile');
+        const submitBtn = document.getElementById('submitBtn');
+        const batchForm = document.getElementById('batchForm');
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('click', () => csvFile.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].name.endsWith('.csv')) {
+                csvFile.files = files;
+                handleFileSelection(files[0]);
+            }
+        });
+
+        // File selection handler
+        csvFile.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelection(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelection(file) {
+            if (!file.name.endsWith('.csv')) {
+                alert('Please select a CSV file');
+                return;
+            }
+
+            // Update upload area
+            uploadArea.innerHTML = `
+                <i class="fas fa-file-csv upload-icon" style="color: #38a169;"></i>
+                <h4 class="mb-3">${file.name}</h4>
+                <p class="text-muted">${formatFileSize(file.size)} • Ready to process</p>
+                <button type="button" class="btn btn-outline-secondary" onclick="resetUpload()">
+                    <i class="fas fa-times me-2"></i>Remove File
+                </button>
+            `;
+            
+            submitBtn.disabled = false;
+        }
+
+        function resetUpload() {
+            csvFile.value = '';
+            submitBtn.disabled = true;
+            uploadArea.innerHTML = `
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <h4 class="mb-3">Drag & Drop CSV File or Click to Browse</h4>
+                <p class="text-muted mb-3">Maximum file size: 50MB</p>
+                <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('csvFile').click()">
+                    <i class="fas fa-folder-open me-2"></i>Choose File
+                </button>
+            `;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Form submission handler
+        batchForm.addEventListener('submit', function(e) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            submitBtn.disabled = true;
+        });
+    </script>
+</body>
+</html>
