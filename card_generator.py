@@ -13,9 +13,12 @@ from datetime import datetime
 
 class CardGenerator:
     def __init__(self):
-        self.card_width = 1050  # 3.5 inches at 300 DPI
-        self.card_height = 600  # 2 inches at 300 DPI
-        self.margin = 50
+        # Standard business card dimensions at 300 DPI for professional printing
+        self.card_width = 1050   # 3.5 inches at 300 DPI
+        self.card_height = 600   # 2 inches at 300 DPI
+        self.dpi = 300
+        self.margin = 45         # Professional margin
+        self.safe_margin = 30    # Content safe area
         
         self.templates = {
             'modern': self.modern_template,
@@ -33,23 +36,40 @@ class CardGenerator:
             'executive': self.executive_template
         }
         
+        # Professional color schemes with sophisticated palettes
         self.color_schemes = {
-            'blue': {'primary': '#2563eb', 'secondary': '#dbeafe', 'text': '#1e293b', 'accent': '#3b82f6'},
-            'red': {'primary': '#dc2626', 'secondary': '#fecaca', 'text': '#1e293b', 'accent': '#ef4444'},
-            'green': {'primary': '#059669', 'secondary': '#d1fae5', 'text': '#1e293b', 'accent': '#10b981'},
-            'purple': {'primary': '#7c3aed', 'secondary': '#e9d5ff', 'text': '#1e293b', 'accent': '#8b5cf6'},
-            'orange': {'primary': '#ea580c', 'secondary': '#fed7aa', 'text': '#1e293b', 'accent': '#f97316'},
-            'teal': {'primary': '#0d9488', 'secondary': '#ccfbf1', 'text': '#1e293b', 'accent': '#14b8a6'},
-            'pink': {'primary': '#db2777', 'secondary': '#fce7f3', 'text': '#1e293b', 'accent': '#ec4899'},
-            'indigo': {'primary': '#4338ca', 'secondary': '#e0e7ff', 'text': '#1e293b', 'accent': '#6366f1'},
-            'gray': {'primary': '#374151', 'secondary': '#f3f4f6', 'text': '#1e293b', 'accent': '#6b7280'},
-            'yellow': {'primary': '#d97706', 'secondary': '#fef3c7', 'text': '#1e293b', 'accent': '#f59e0b'},
-            'cyan': {'primary': '#0891b2', 'secondary': '#cffafe', 'text': '#1e293b', 'accent': '#06b6d4'},
-            'emerald': {'primary': '#047857', 'secondary': '#d1fae5', 'text': '#1e293b', 'accent': '#059669'},
-            'rose': {'primary': '#e11d48', 'secondary': '#ffe4e6', 'text': '#1e293b', 'accent': '#f43f5e'},
-            'amber': {'primary': '#d97706', 'secondary': '#fef3c7', 'text': '#1e293b', 'accent': '#f59e0b'},
-            'lime': {'primary': '#65a30d', 'secondary': '#ecfccb', 'text': '#1e293b', 'accent': '#84cc16'},
-            'black': {'primary': '#000000', 'secondary': '#f8fafc', 'text': '#1e293b', 'accent': '#4b5563'}
+            'corporate_blue': {
+                'primary': '#1e3a8a', 'secondary': '#f1f5f9', 'text': '#0f172a', 
+                'accent': '#3b82f6', 'light': '#e2e8f0', 'dark': '#334155'
+            },
+            'executive_navy': {
+                'primary': '#1e293b', 'secondary': '#f8fafc', 'text': '#0f172a',
+                'accent': '#64748b', 'light': '#e2e8f0', 'dark': '#475569'
+            },
+            'professional_gray': {
+                'primary': '#374151', 'secondary': '#f9fafb', 'text': '#111827',
+                'accent': '#6b7280', 'light': '#e5e7eb', 'dark': '#4b5563'
+            },
+            'modern_black': {
+                'primary': '#000000', 'secondary': '#ffffff', 'text': '#000000',
+                'accent': '#404040', 'light': '#f5f5f5', 'dark': '#262626'
+            },
+            'elegant_burgundy': {
+                'primary': '#7c2d12', 'secondary': '#fef7f0', 'text': '#1c1917',
+                'accent': '#dc2626', 'light': '#fed7d7', 'dark': '#991b1b'
+            },
+            'sophisticated_green': {
+                'primary': '#14532d', 'secondary': '#f0fdf4', 'text': '#052e16',
+                'accent': '#16a34a', 'light': '#dcfce7', 'dark': '#166534'
+            },
+            'premium_gold': {
+                'primary': '#92400e', 'secondary': '#fffbeb', 'text': '#451a03',
+                'accent': '#d97706', 'light': '#fef3c7', 'dark': '#a16207'
+            },
+            'royal_purple': {
+                'primary': '#581c87', 'secondary': '#faf5ff', 'text': '#2e1065',
+                'accent': '#8b5cf6', 'light': '#e9d5ff', 'dark': '#6d28d9'
+            }
         }
         
         self.fonts = {
@@ -87,74 +107,157 @@ END:VCARD"""
         qr_img = qr.make_image(fill_color="black", back_color="white")
         return qr_img
 
-    def get_font_path(self, font_name, size, bold=False):
-        """Get system font path - fallback to default fonts"""
+    def get_font_path(self, font_name, size, bold=False, style='normal'):
+        """Get professional font with proper hierarchy"""
         try:
-            if bold:
-                return ImageFont.truetype("arial.ttf", size)
-            else:
-                return ImageFont.truetype("arial.ttf", size)
+            # Try to load better fonts for professional appearance
+            font_paths = {
+                'regular': ['Arial.ttf', 'arial.ttf', 'DejaVuSans.ttf'],
+                'bold': ['Arial-Bold.ttf', 'arialbd.ttf', 'DejaVuSans-Bold.ttf'],
+                'light': ['Arial.ttf', 'arial.ttf', 'DejaVuSans.ttf']
+            }
+            
+            target_style = 'bold' if bold else 'regular'
+            
+            for font_path in font_paths[target_style]:
+                try:
+                    return ImageFont.truetype(font_path, size)
+                except:
+                    continue
+            
+            # Fallback to default
+            return ImageFont.load_default()
         except:
             return ImageFont.load_default()
 
     def modern_template(self, card_data, colors):
-        """Modern template with clean lines"""
-        img = Image.new('RGB', (self.card_width, self.card_height), colors['secondary'])
+        """Ultra-modern professional template with sophisticated layout"""
+        img = Image.new('RGB', (self.card_width, self.card_height), 'white')
         draw = ImageDraw.Draw(img)
         
-        # Header bar with better proportions
-        draw.rectangle([0, 0, self.card_width, 140], fill=colors['primary'])
+        # Sophisticated vertical accent bar
+        accent_width = 8
+        draw.rectangle([0, 0, accent_width, self.card_height], fill=colors['primary'])
         
-        # Name - larger and better positioned
-        name_font = self.get_font_path('inter', 56, bold=True)
-        draw.text((self.margin, 35), card_data.get('name', ''), fill='white', font=name_font)
+        # Subtle background pattern
+        bg_rect = Image.new('RGBA', (self.card_width - accent_width, self.card_height), 
+                           colors['light'] + '20')
+        img.paste(bg_rect, (accent_width, 0), bg_rect)
         
-        # Job title - larger and better spaced
-        title_font = self.get_font_path('inter', 32)
-        draw.text((self.margin, 170), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
+        # Content area with proper margins
+        content_x = accent_width + self.safe_margin
         
-        # Company - better size and spacing
-        company_font = self.get_font_path('inter', 28)
-        draw.text((self.margin, 220), card_data.get('company', ''), fill=colors['accent'], font=company_font)
+        # Name with professional hierarchy
+        name_font = self.get_font_path('inter', 48, bold=True)
+        name_y = 45
+        draw.text((content_x, name_y), card_data.get('name', '').upper(), 
+                 fill=colors['primary'], font=name_font)
         
-        # Contact info - larger and better spaced
-        contact_font = self.get_font_path('inter', 24)
-        y_pos = 290
-        for field in ['email', 'phone', 'website']:
-            if card_data.get(field):
-                draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 35
+        # Professional divider line
+        line_y = name_y + 65
+        line_length = 180
+        draw.rectangle([content_x, line_y, content_x + line_length, line_y + 2], 
+                      fill=colors['accent'])
+        
+        # Job title with sophisticated spacing
+        title_font = self.get_font_path('inter', 22, bold=False)
+        title_y = line_y + 20
+        draw.text((content_x, title_y), card_data.get('job_title', ''), 
+                 fill=colors['text'], font=title_font)
+        
+        # Company name with emphasis
+        company_font = self.get_font_path('inter', 20, bold=True)
+        company_y = title_y + 35
+        draw.text((content_x, company_y), card_data.get('company', ''), 
+                 fill=colors['accent'], font=company_font)
+        
+        # Contact information with professional formatting
+        contact_font = self.get_font_path('inter', 18)
+        contact_y = company_y + 60
+        
+        contact_items = [
+            ('email', card_data.get('email', '')),
+            ('phone', card_data.get('phone', '')),
+            ('website', card_data.get('website', ''))
+        ]
+        
+        for label, value in contact_items:
+            if value:
+                draw.text((content_x, contact_y), value, fill=colors['text'], font=contact_font)
+                contact_y += 30
         
         return img
 
     def classic_template(self, card_data, colors):
-        """Classic professional template"""
+        """Timeless professional template with elegant borders"""
         img = Image.new('RGB', (self.card_width, self.card_height), 'white')
         draw = ImageDraw.Draw(img)
         
-        # Professional border with better thickness
-        draw.rectangle([15, 15, self.card_width-15, self.card_height-15], outline=colors['primary'], width=4)
+        # Elegant double border frame
+        outer_border = 12
+        inner_border = 20
         
-        # Name - larger and centered better
-        name_font = self.get_font_path('inter', 54, bold=True)
-        draw.text((self.margin, 70), card_data.get('name', ''), fill=colors['primary'], font=name_font)
+        # Outer border
+        draw.rectangle([outer_border, outer_border, 
+                       self.card_width - outer_border, self.card_height - outer_border], 
+                      outline=colors['light'], width=1)
         
-        # Professional divider line
-        draw.line([self.margin, 150, self.card_width-self.margin, 150], fill=colors['accent'], width=3)
+        # Inner border with professional thickness
+        draw.rectangle([inner_border, inner_border, 
+                       self.card_width - inner_border, self.card_height - inner_border], 
+                      outline=colors['primary'], width=3)
         
-        # Job title and company - better sizes
-        title_font = self.get_font_path('inter', 30)
-        company_font = self.get_font_path('inter', 26)
-        draw.text((self.margin, 180), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
-        draw.text((self.margin, 220), card_data.get('company', ''), fill=colors['accent'], font=company_font)
+        # Content positioning
+        content_margin = inner_border + 25
         
-        # Contact info - larger font
-        contact_font = self.get_font_path('inter', 22)
-        y_pos = 280
-        for field in ['email', 'phone', 'website']:
-            if card_data.get(field):
-                draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 35
+        # Name with traditional elegance
+        name_font = self.get_font_path('inter', 42, bold=True)
+        name_y = 65
+        draw.text((content_margin, name_y), card_data.get('name', ''), 
+                 fill=colors['primary'], font=name_font)
+        
+        # Classic ornamental divider
+        divider_y = name_y + 60
+        divider_start = content_margin
+        divider_end = self.card_width - content_margin
+        
+        # Main divider line
+        draw.rectangle([divider_start, divider_y, divider_end, divider_y + 2], 
+                      fill=colors['primary'])
+        
+        # Ornamental dots
+        dot_spacing = 15
+        for i in range(3):
+            dot_x = divider_start + (i * dot_spacing)
+            draw.ellipse([dot_x - 2, divider_y - 4, dot_x + 2, divider_y + 6], 
+                        fill=colors['accent'])
+        
+        # Professional information hierarchy
+        title_font = self.get_font_path('inter', 24, bold=False)
+        company_font = self.get_font_path('inter', 22, bold=True)
+        
+        info_y = divider_y + 30
+        draw.text((content_margin, info_y), card_data.get('job_title', ''), 
+                 fill=colors['text'], font=title_font)
+        
+        draw.text((content_margin, info_y + 35), card_data.get('company', ''), 
+                 fill=colors['accent'], font=company_font)
+        
+        # Contact details with classic formatting
+        contact_font = self.get_font_path('inter', 18)
+        contact_y = info_y + 85
+        
+        contact_items = [
+            card_data.get('email', ''),
+            card_data.get('phone', ''),
+            card_data.get('website', '')
+        ]
+        
+        for item in contact_items:
+            if item:
+                draw.text((content_margin, contact_y), item, 
+                         fill=colors['text'], font=contact_font)
+                contact_y += 28
         
         return img
 
@@ -190,70 +293,182 @@ END:VCARD"""
         return img
 
     def elegant_template(self, card_data, colors):
-        """Elegant template with sophisticated styling"""
+        """Luxury elegant template with sophisticated design elements"""
         img = Image.new('RGB', (self.card_width, self.card_height), colors['secondary'])
         draw = ImageDraw.Draw(img)
         
-        # Elegant double border
-        draw.rectangle([25, 25, self.card_width-25, self.card_height-25], outline=colors['accent'], width=2)
-        draw.rectangle([30, 30, self.card_width-30, self.card_height-30], outline=colors['primary'], width=3)
+        # Luxury frame with multiple borders
+        frame_outer = 20
+        frame_middle = 28
+        frame_inner = 35
         
-        # Name with elegant styling - larger
-        name_font = self.get_font_path('inter', 50, bold=True)
-        draw.text((self.margin, 80), card_data.get('name', ''), fill=colors['primary'], font=name_font)
+        # Triple frame effect
+        draw.rectangle([frame_outer, frame_outer, 
+                       self.card_width - frame_outer, self.card_height - frame_outer], 
+                      outline=colors['light'], width=1)
         
-        # Decorative line - longer and thicker
-        draw.line([self.margin, 160, self.card_width//2 + 50, 160], fill=colors['accent'], width=2)
+        draw.rectangle([frame_middle, frame_middle, 
+                       self.card_width - frame_middle, self.card_height - frame_middle], 
+                      outline=colors['accent'], width=1)
         
-        # Job title and company - better sizes
-        title_font = self.get_font_path('inter', 28)
-        company_font = self.get_font_path('inter', 24)
-        draw.text((self.margin, 190), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
-        draw.text((self.margin, 230), card_data.get('company', ''), fill=colors['accent'], font=company_font)
+        draw.rectangle([frame_inner, frame_inner, 
+                       self.card_width - frame_inner, self.card_height - frame_inner], 
+                      outline=colors['primary'], width=2)
         
-        # Contact info - larger and better spaced
-        contact_font = self.get_font_path('inter', 20)
-        y_pos = 290
+        # Elegant corner ornaments
+        corner_size = 15
+        corners = [(frame_inner + 5, frame_inner + 5), 
+                  (self.card_width - frame_inner - corner_size - 5, frame_inner + 5),
+                  (frame_inner + 5, self.card_height - frame_inner - corner_size - 5),
+                  (self.card_width - frame_inner - corner_size - 5, 
+                   self.card_height - frame_inner - corner_size - 5)]
+        
+        for x, y in corners:
+            draw.ellipse([x, y, x + corner_size, y + corner_size], 
+                        fill=colors['accent'])
+            draw.ellipse([x + 3, y + 3, x + corner_size - 3, y + corner_size - 3], 
+                        fill=colors['secondary'])
+        
+        # Content area
+        content_x = frame_inner + 25
+        
+        # Elegant name styling
+        name_font = self.get_font_path('inter', 38, bold=True)
+        name_y = 75
+        draw.text((content_x, name_y), card_data.get('name', ''), 
+                 fill=colors['primary'], font=name_font)
+        
+        # Sophisticated decorative element
+        decoration_y = name_y + 55
+        decoration_width = 120
+        
+        # Central diamond shape
+        diamond_center = content_x + decoration_width // 2
+        diamond_points = [
+            (diamond_center - 8, decoration_y),
+            (diamond_center, decoration_y - 6),
+            (diamond_center + 8, decoration_y),
+            (diamond_center, decoration_y + 6)
+        ]
+        draw.polygon(diamond_points, fill=colors['accent'])
+        
+        # Flanking lines
+        draw.rectangle([content_x, decoration_y - 1, diamond_center - 15, decoration_y + 1], 
+                      fill=colors['accent'])
+        draw.rectangle([diamond_center + 15, decoration_y - 1, 
+                       content_x + decoration_width, decoration_y + 1], 
+                      fill=colors['accent'])
+        
+        # Professional information
+        title_font = self.get_font_path('inter', 22)
+        company_font = self.get_font_path('inter', 20, bold=True)
+        
+        info_y = decoration_y + 25
+        draw.text((content_x, info_y), card_data.get('job_title', ''), 
+                 fill=colors['text'], font=title_font)
+        
+        draw.text((content_x, info_y + 32), card_data.get('company', ''), 
+                 fill=colors['accent'], font=company_font)
+        
+        # Contact information with elegant spacing
+        contact_font = self.get_font_path('inter', 17)
+        contact_y = info_y + 75
+        
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
-                draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 32
+                draw.text((content_x, contact_y), card_data[field], 
+                         fill=colors['text'], font=contact_font)
+                contact_y += 28
         
         return img
 
     def tech_template(self, card_data, colors):
-        """Tech-inspired template"""
-        img = Image.new('RGB', (self.card_width, self.card_height), '#000000')
+        """Cutting-edge technology template with digital aesthetics"""
+        # Dark base for high-tech feel
+        base_color = '#0a0a0a'
+        img = Image.new('RGB', (self.card_width, self.card_height), base_color)
         draw = ImageDraw.Draw(img)
         
-        # Tech grid pattern - more subtle
-        for i in range(0, self.card_width, 40):
-            draw.line([i, 0, i, self.card_height], fill='#2a2a2a', width=1)
-        for i in range(0, self.card_height, 40):
-            draw.line([0, i, self.card_width, i], fill='#2a2a2a', width=1)
+        # Sophisticated grid pattern
+        grid_spacing = 30
+        grid_color = '#1a1a1a'
         
-        # Accent rectangle - wider
-        draw.rectangle([0, 0, 350, self.card_height], fill=colors['primary'])
+        # Subtle grid lines
+        for i in range(0, self.card_width, grid_spacing):
+            draw.line([i, 0, i, self.card_height], fill=grid_color, width=1)
+        for i in range(0, self.card_height, grid_spacing):
+            draw.line([0, i, self.card_width, i], fill=grid_color, width=1)
         
-        # Name - larger
-        name_font = self.get_font_path('inter', 48, bold=True)
-        draw.text((self.margin, 70), card_data.get('name', ''), fill='white', font=name_font)
+        # High-tech accent panel with angle
+        panel_width = 320
+        angle_offset = 40
         
-        # Job title - larger
-        title_font = self.get_font_path('inter', 26)
-        draw.text((self.margin, 140), card_data.get('job_title', ''), fill=colors['secondary'], font=title_font)
+        # Main panel
+        panel_points = [
+            (0, 0),
+            (panel_width, 0),
+            (panel_width - angle_offset, self.card_height),
+            (0, self.card_height)
+        ]
+        draw.polygon(panel_points, fill=colors['primary'])
         
-        # Company - better size
-        company_font = self.get_font_path('inter', 22)
-        draw.text((self.margin, 180), card_data.get('company', ''), fill='white', font=company_font)
+        # Circuit-inspired accent lines
+        circuit_color = colors['accent']
         
-        # Contact info - larger and better spaced
-        contact_font = self.get_font_path('inter', 20)
-        y_pos = 240
-        for field in ['email', 'phone', 'website']:
-            if card_data.get(field):
-                draw.text((self.margin, y_pos), card_data[field], fill=colors['secondary'], font=contact_font)
-                y_pos += 32
+        # Horizontal circuit lines
+        for y in [120, 180, 240]:
+            draw.rectangle([20, y, panel_width - 60, y + 2], fill=circuit_color)
+            
+            # Circuit nodes
+            node_size = 4
+            for x in [30, 80, 130, 180]:
+                if x < panel_width - 60:
+                    draw.ellipse([x - node_size, y - node_size, 
+                                 x + node_size, y + node_size], fill=circuit_color)
+        
+        # Name with tech styling
+        name_font = self.get_font_path('inter', 40, bold=True)
+        name_y = 45
+        name_text = card_data.get('name', '').upper()
+        
+        # Glowing effect simulation
+        glow_offset = 1
+        draw.text((self.safe_margin + glow_offset, name_y + glow_offset), 
+                 name_text, fill=colors['accent'], font=name_font)
+        draw.text((self.safe_margin, name_y), name_text, 
+                 fill='white', font=name_font)
+        
+        # Digital-style information display
+        title_font = self.get_font_path('inter', 22)
+        company_font = self.get_font_path('inter', 20)
+        
+        info_y = 140
+        
+        # Job title with bracket styling
+        title_text = f"[ {card_data.get('job_title', '')} ]"
+        draw.text((self.safe_margin, info_y), title_text, 
+                 fill=colors['light'], font=title_font)
+        
+        # Company with tech formatting
+        company_text = f"> {card_data.get('company', '')}"
+        draw.text((self.safe_margin, info_y + 35), company_text, 
+                 fill='white', font=company_font)
+        
+        # Contact data in terminal style
+        contact_font = self.get_font_path('inter', 18)
+        contact_y = 250
+        
+        contact_prefixes = ['@', '#', '$']
+        contact_fields = [card_data.get('email', ''), 
+                         card_data.get('phone', ''), 
+                         card_data.get('website', '')]
+        
+        for i, (prefix, value) in enumerate(zip(contact_prefixes, contact_fields)):
+            if value:
+                display_text = f"{prefix} {value}"
+                draw.text((self.safe_margin, contact_y), display_text, 
+                         fill=colors['light'], font=contact_font)
+                contact_y += 28
         
         return img
 
@@ -266,28 +481,60 @@ END:VCARD"""
         return self.creative_template(card_data, colors)  # Similar to creative
 
     def minimal_template(self, card_data, colors):
-        """Minimal clean template"""
+        """Ultra-minimal professional template with perfect balance"""
         img = Image.new('RGB', (self.card_width, self.card_height), 'white')
         draw = ImageDraw.Draw(img)
         
-        # Name - larger for minimal impact
-        name_font = self.get_font_path('inter', 58, bold=True)
-        draw.text((self.margin, 90), card_data.get('name', ''), fill=colors['text'], font=name_font)
+        # Minimal but sophisticated layout
+        content_margin = 60
         
-        # Simple line - longer and thicker
-        draw.line([self.margin, 170, self.margin + 300, 170], fill=colors['primary'], width=3)
+        # Name with perfect minimal typography
+        name_font = self.get_font_path('inter', 46, bold=True)
+        name_y = 80
+        draw.text((content_margin, name_y), card_data.get('name', ''), 
+                 fill=colors['text'], font=name_font)
         
-        # Job title - larger
-        title_font = self.get_font_path('inter', 30)
-        draw.text((self.margin, 200), card_data.get('job_title', ''), fill=colors['accent'], font=title_font)
+        # Geometric accent element
+        accent_y = name_y + 65
+        accent_length = 150
+        accent_thickness = 3
         
-        # Contact info with minimal styling - larger
-        contact_font = self.get_font_path('inter', 24)
-        y_pos = 270
-        for field in ['email', 'phone', 'website']:
-            if card_data.get(field):
-                draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 35
+        # Main accent line
+        draw.rectangle([content_margin, accent_y, 
+                       content_margin + accent_length, accent_y + accent_thickness], 
+                      fill=colors['primary'])
+        
+        # Minimal geometric shape
+        square_size = 8
+        square_x = content_margin + accent_length + 15
+        draw.rectangle([square_x, accent_y - 2, 
+                       square_x + square_size, accent_y + square_size + 1], 
+                      fill=colors['accent'])
+        
+        # Professional hierarchy with perfect spacing
+        title_font = self.get_font_path('inter', 22)
+        company_font = self.get_font_path('inter', 20)
+        
+        info_y = accent_y + 35
+        draw.text((content_margin, info_y), card_data.get('job_title', ''), 
+                 fill=colors['accent'], font=title_font)
+        
+        draw.text((content_margin, info_y + 35), card_data.get('company', ''), 
+                 fill=colors['text'], font=company_font)
+        
+        # Minimal contact layout
+        contact_font = self.get_font_path('inter', 18)
+        contact_y = info_y + 85
+        
+        # Create clean, spaced contact list
+        contacts = [card_data.get('email', ''), card_data.get('phone', ''), 
+                   card_data.get('website', '')]
+        
+        for contact in contacts:
+            if contact:
+                draw.text((content_margin, contact_y), contact, 
+                         fill=colors['text'], font=contact_font)
+                contact_y += 30
         
         return img
 
@@ -424,36 +671,91 @@ END:VCARD"""
         return img
 
     def executive_template(self, card_data, colors):
-        """Executive professional template"""
+        """Premium executive template with authoritative design"""
         img = Image.new('RGB', (self.card_width, self.card_height), 'white')
         draw = ImageDraw.Draw(img)
         
-        # Executive header - taller and more professional
-        draw.rectangle([0, 0, self.card_width, 120], fill=colors['primary'])
-        draw.rectangle([0, 120, self.card_width, 130], fill=colors['accent'])
+        # Executive power strip design
+        header_height = 130
         
-        # Name - larger and better positioned
-        name_font = self.get_font_path('inter', 52, bold=True)
-        draw.text((self.margin, 30), card_data.get('name', ''), fill='white', font=name_font)
+        # Main header block
+        draw.rectangle([0, 0, self.card_width, header_height], fill=colors['primary'])
         
-        # Job title - larger and professional
-        title_font = self.get_font_path('inter', 34, bold=True)
-        draw.text((self.margin, 160), card_data.get('job_title', ''), fill=colors['primary'], font=title_font)
+        # Accent stripe
+        stripe_height = 8
+        draw.rectangle([0, header_height, self.card_width, header_height + stripe_height], 
+                      fill=colors['accent'])
         
-        # Company - better size
-        company_font = self.get_font_path('inter', 28)
-        draw.text((self.margin, 210), card_data.get('company', ''), fill=colors['text'], font=company_font)
+        # Subtle gradient effect simulation
+        gradient_height = 25
+        for i in range(gradient_height):
+            alpha = int(255 * (1 - i / gradient_height) * 0.1)
+            gradient_color = colors['dark'] + f'{alpha:02x}'
+            try:
+                # Create gradient overlay
+                gradient_line = Image.new('RGBA', (self.card_width, 1), gradient_color)
+                img.paste(gradient_line, (0, i), gradient_line)
+            except:
+                pass
         
-        # Professional divider - thicker
-        draw.line([self.margin, 260, self.card_width-self.margin, 260], fill=colors['accent'], width=3)
+        # Executive name positioning
+        name_font = self.get_font_path('inter', 44, bold=True)
+        name_x = self.safe_margin
+        name_y = 35
         
-        # Contact info - larger and better spaced
-        contact_font = self.get_font_path('inter', 22)
-        y_pos = 290
-        for field in ['email', 'phone', 'website']:
-            if card_data.get(field):
-                draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 35
+        # Drop shadow effect for name
+        shadow_offset = 2
+        draw.text((name_x + shadow_offset, name_y + shadow_offset), 
+                 card_data.get('name', ''), fill=colors['dark'], font=name_font)
+        draw.text((name_x, name_y), card_data.get('name', ''), 
+                 fill='white', font=name_font)
+        
+        # Professional credentials area
+        content_y = header_height + stripe_height + 25
+        
+        # Job title with authority
+        title_font = self.get_font_path('inter', 26, bold=True)
+        draw.text((name_x, content_y), card_data.get('job_title', ''), 
+                 fill=colors['primary'], font=title_font)
+        
+        # Company with prestige styling
+        company_font = self.get_font_path('inter', 22)
+        company_y = content_y + 40
+        draw.text((name_x, company_y), card_data.get('company', ''), 
+                 fill=colors['text'], font=company_font)
+        
+        # Executive divider with sophisticated design
+        divider_y = company_y + 50
+        divider_length = 200
+        
+        # Main divider
+        draw.rectangle([name_x, divider_y, name_x + divider_length, divider_y + 2], 
+                      fill=colors['accent'])
+        
+        # End caps
+        cap_size = 6
+        draw.ellipse([name_x - cap_size//2, divider_y - cap_size//2, 
+                     name_x + cap_size//2, divider_y + cap_size//2], 
+                    fill=colors['primary'])
+        draw.ellipse([name_x + divider_length - cap_size//2, divider_y - cap_size//2, 
+                     name_x + divider_length + cap_size//2, divider_y + cap_size//2], 
+                    fill=colors['primary'])
+        
+        # Executive contact information
+        contact_font = self.get_font_path('inter', 19)
+        contact_y = divider_y + 25
+        
+        contact_fields = [
+            ('email', card_data.get('email', '')),
+            ('phone', card_data.get('phone', '')),
+            ('website', card_data.get('website', ''))
+        ]
+        
+        for label, value in contact_fields:
+            if value:
+                draw.text((name_x, contact_y), value, 
+                         fill=colors['text'], font=contact_font)
+                contact_y += 30
         
         return img
 
@@ -462,7 +764,7 @@ END:VCARD"""
         template_name = card_data.get('template', 'modern')
         color_scheme = card_data.get('color_scheme', 'blue')
         
-        colors = self.color_schemes.get(color_scheme, self.color_schemes['blue'])
+        colors = self.color_schemes.get(color_scheme, self.color_schemes['corporate_blue'])
         template_func = self.templates.get(template_name, self.modern_template)
         
         # Generate base card
