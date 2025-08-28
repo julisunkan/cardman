@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - CardGen{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <div class="text-center">
+        <div class="hero-section">
+            <i class="fas fa-exclamation-circle hero-icon"></i>
+            <h1 class="hero-title">Server Error</h1>
+            <p class="hero-subtitle">Something went wrong. Please try again later.</p>
+            <div class="cta-buttons mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-home me-2"></i>
+                    Go Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

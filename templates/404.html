@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - CardGen{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <div class="text-center">
+        <div class="hero-section">
+            <i class="fas fa-exclamation-triangle hero-icon"></i>
+            <h1 class="hero-title">Page Not Found</h1>
+            <p class="hero-subtitle">The page you're looking for doesn't exist.</p>
+            <div class="cta-buttons mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-home me-2"></i>
+                    Go Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

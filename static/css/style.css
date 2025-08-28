@@ -269,9 +269,10 @@ p {
 /* Template Grid */
 .template-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
+    justify-items: center;
 }
 
 .template-option {
@@ -282,6 +283,11 @@ p {
     transition: var(--transition);
     padding: 1rem;
     text-align: center;
+    width: 100%;
+    max-width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .template-option:hover {
@@ -318,9 +324,10 @@ p {
 /* Color Grid */
 .color-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
     gap: 0.75rem;
     margin-bottom: 1.5rem;
+    justify-items: center;
 }
 
 .color-option {
@@ -331,6 +338,11 @@ p {
     transition: var(--transition);
     padding: 0.75rem;
     text-align: center;
+    width: 100%;
+    max-width: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .color-option:hover {
@@ -781,11 +793,23 @@ p {
     }
     
     .template-grid {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.75rem;
     }
     
     .color-grid {
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 0.5rem;
+    }
+    
+    .template-option {
+        max-width: 120px;
+        padding: 0.75rem;
+    }
+    
+    .color-option {
+        max-width: 70px;
+        padding: 0.5rem;
     }
     
     .features-grid {
