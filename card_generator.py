@@ -15,7 +15,7 @@ class CardGenerator:
     def __init__(self):
         self.card_width = 1050  # 3.5 inches at 300 DPI
         self.card_height = 600  # 2 inches at 300 DPI
-        self.margin = 60
+        self.margin = 50
         
         self.templates = {
             'modern': self.modern_template,
@@ -102,28 +102,28 @@ END:VCARD"""
         img = Image.new('RGB', (self.card_width, self.card_height), colors['secondary'])
         draw = ImageDraw.Draw(img)
         
-        # Header bar
-        draw.rectangle([0, 0, self.card_width, 120], fill=colors['primary'])
+        # Header bar with better proportions
+        draw.rectangle([0, 0, self.card_width, 140], fill=colors['primary'])
         
-        # Name
-        name_font = self.get_font_path('inter', 48, bold=True)
-        draw.text((self.margin, 40), card_data.get('name', ''), fill='white', font=name_font)
+        # Name - larger and better positioned
+        name_font = self.get_font_path('inter', 56, bold=True)
+        draw.text((self.margin, 35), card_data.get('name', ''), fill='white', font=name_font)
         
-        # Job title
-        title_font = self.get_font_path('inter', 24)
-        draw.text((self.margin, 160), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
+        # Job title - larger and better spaced
+        title_font = self.get_font_path('inter', 32)
+        draw.text((self.margin, 170), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
         
-        # Company
-        company_font = self.get_font_path('inter', 20)
-        draw.text((self.margin, 200), card_data.get('company', ''), fill=colors['accent'], font=company_font)
+        # Company - better size and spacing
+        company_font = self.get_font_path('inter', 28)
+        draw.text((self.margin, 220), card_data.get('company', ''), fill=colors['accent'], font=company_font)
         
-        # Contact info
-        contact_font = self.get_font_path('inter', 18)
-        y_pos = 260
+        # Contact info - larger and better spaced
+        contact_font = self.get_font_path('inter', 24)
+        y_pos = 290
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 30
+                y_pos += 35
         
         return img
 
@@ -132,28 +132,29 @@ END:VCARD"""
         img = Image.new('RGB', (self.card_width, self.card_height), 'white')
         draw = ImageDraw.Draw(img)
         
-        # Border
-        draw.rectangle([20, 20, self.card_width-20, self.card_height-20], outline=colors['primary'], width=3)
+        # Professional border with better thickness
+        draw.rectangle([15, 15, self.card_width-15, self.card_height-15], outline=colors['primary'], width=4)
         
-        # Name
-        name_font = self.get_font_path('inter', 44, bold=True)
-        draw.text((self.margin, 80), card_data.get('name', ''), fill=colors['primary'], font=name_font)
+        # Name - larger and centered better
+        name_font = self.get_font_path('inter', 54, bold=True)
+        draw.text((self.margin, 70), card_data.get('name', ''), fill=colors['primary'], font=name_font)
         
-        # Divider line
-        draw.line([self.margin, 140, self.card_width-self.margin, 140], fill=colors['accent'], width=2)
+        # Professional divider line
+        draw.line([self.margin, 150, self.card_width-self.margin, 150], fill=colors['accent'], width=3)
         
-        # Job title and company
-        title_font = self.get_font_path('inter', 24)
-        draw.text((self.margin, 170), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
-        draw.text((self.margin, 200), card_data.get('company', ''), fill=colors['accent'], font=title_font)
+        # Job title and company - better sizes
+        title_font = self.get_font_path('inter', 30)
+        company_font = self.get_font_path('inter', 26)
+        draw.text((self.margin, 180), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
+        draw.text((self.margin, 220), card_data.get('company', ''), fill=colors['accent'], font=company_font)
         
-        # Contact info
-        contact_font = self.get_font_path('inter', 18)
-        y_pos = 260
+        # Contact info - larger font
+        contact_font = self.get_font_path('inter', 22)
+        y_pos = 280
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 30
+                y_pos += 35
         
         return img
 
@@ -162,29 +163,29 @@ END:VCARD"""
         img = Image.new('RGB', (self.card_width, self.card_height), 'white')
         draw = ImageDraw.Draw(img)
         
-        # Background shapes
-        draw.ellipse([self.card_width-200, -50, self.card_width+50, 200], fill=colors['secondary'])
-        draw.rectangle([0, self.card_height-80, 300, self.card_height], fill=colors['primary'])
+        # Background shapes - larger and more impactful
+        draw.ellipse([self.card_width-250, -60, self.card_width+60, 250], fill=colors['secondary'])
+        draw.rectangle([0, self.card_height-100, 350, self.card_height], fill=colors['primary'])
         
-        # Name
-        name_font = self.get_font_path('inter', 42, bold=True)
-        draw.text((self.margin, 60), card_data.get('name', ''), fill=colors['primary'], font=name_font)
+        # Name - larger and better positioned
+        name_font = self.get_font_path('inter', 52, bold=True)
+        draw.text((self.margin, 80), card_data.get('name', ''), fill=colors['primary'], font=name_font)
         
-        # Job title
-        title_font = self.get_font_path('inter', 22)
-        draw.text((self.margin, 120), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
+        # Job title - larger
+        title_font = self.get_font_path('inter', 28)
+        draw.text((self.margin, 150), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
         
-        # Company
-        company_font = self.get_font_path('inter', 20)
-        draw.text((self.margin, 150), card_data.get('company', ''), fill=colors['accent'], font=company_font)
+        # Company - better size
+        company_font = self.get_font_path('inter', 24)
+        draw.text((self.margin, 190), card_data.get('company', ''), fill=colors['accent'], font=company_font)
         
-        # Contact info
-        contact_font = self.get_font_path('inter', 16)
-        y_pos = 200
+        # Contact info - larger and better spaced
+        contact_font = self.get_font_path('inter', 20)
+        y_pos = 250
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 25
+                y_pos += 32
         
         return img
 
@@ -193,29 +194,30 @@ END:VCARD"""
         img = Image.new('RGB', (self.card_width, self.card_height), colors['secondary'])
         draw = ImageDraw.Draw(img)
         
-        # Elegant border
-        draw.rectangle([30, 30, self.card_width-30, self.card_height-30], outline=colors['accent'], width=1)
-        draw.rectangle([35, 35, self.card_width-35, self.card_height-35], outline=colors['primary'], width=2)
+        # Elegant double border
+        draw.rectangle([25, 25, self.card_width-25, self.card_height-25], outline=colors['accent'], width=2)
+        draw.rectangle([30, 30, self.card_width-30, self.card_height-30], outline=colors['primary'], width=3)
         
-        # Name with elegant styling
-        name_font = self.get_font_path('inter', 40, bold=True)
-        draw.text((self.margin, 90), card_data.get('name', ''), fill=colors['primary'], font=name_font)
+        # Name with elegant styling - larger
+        name_font = self.get_font_path('inter', 50, bold=True)
+        draw.text((self.margin, 80), card_data.get('name', ''), fill=colors['primary'], font=name_font)
         
-        # Decorative line
-        draw.line([self.margin, 150, self.card_width//2, 150], fill=colors['accent'], width=1)
+        # Decorative line - longer and thicker
+        draw.line([self.margin, 160, self.card_width//2 + 50, 160], fill=colors['accent'], width=2)
         
-        # Job title and company
-        title_font = self.get_font_path('inter', 22)
-        draw.text((self.margin, 180), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
-        draw.text((self.margin, 210), card_data.get('company', ''), fill=colors['accent'], font=title_font)
+        # Job title and company - better sizes
+        title_font = self.get_font_path('inter', 28)
+        company_font = self.get_font_path('inter', 24)
+        draw.text((self.margin, 190), card_data.get('job_title', ''), fill=colors['text'], font=title_font)
+        draw.text((self.margin, 230), card_data.get('company', ''), fill=colors['accent'], font=company_font)
         
-        # Contact info
-        contact_font = self.get_font_path('inter', 16)
-        y_pos = 270
+        # Contact info - larger and better spaced
+        contact_font = self.get_font_path('inter', 20)
+        y_pos = 290
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 25
+                y_pos += 32
         
         return img
 
@@ -224,34 +226,34 @@ END:VCARD"""
         img = Image.new('RGB', (self.card_width, self.card_height), '#000000')
         draw = ImageDraw.Draw(img)
         
-        # Tech grid pattern
-        for i in range(0, self.card_width, 50):
-            draw.line([i, 0, i, self.card_height], fill='#333333', width=1)
-        for i in range(0, self.card_height, 50):
-            draw.line([0, i, self.card_width, i], fill='#333333', width=1)
+        # Tech grid pattern - more subtle
+        for i in range(0, self.card_width, 40):
+            draw.line([i, 0, i, self.card_height], fill='#2a2a2a', width=1)
+        for i in range(0, self.card_height, 40):
+            draw.line([0, i, self.card_width, i], fill='#2a2a2a', width=1)
         
-        # Accent rectangle
-        draw.rectangle([0, 0, 300, self.card_height], fill=colors['primary'])
+        # Accent rectangle - wider
+        draw.rectangle([0, 0, 350, self.card_height], fill=colors['primary'])
         
-        # Name
-        name_font = self.get_font_path('inter', 38, bold=True)
-        draw.text((self.margin, 80), card_data.get('name', ''), fill='white', font=name_font)
+        # Name - larger
+        name_font = self.get_font_path('inter', 48, bold=True)
+        draw.text((self.margin, 70), card_data.get('name', ''), fill='white', font=name_font)
         
-        # Job title
-        title_font = self.get_font_path('inter', 20)
-        draw.text((self.margin, 130), card_data.get('job_title', ''), fill=colors['secondary'], font=title_font)
+        # Job title - larger
+        title_font = self.get_font_path('inter', 26)
+        draw.text((self.margin, 140), card_data.get('job_title', ''), fill=colors['secondary'], font=title_font)
         
-        # Company
-        company_font = self.get_font_path('inter', 18)
-        draw.text((self.margin, 160), card_data.get('company', ''), fill='white', font=company_font)
+        # Company - better size
+        company_font = self.get_font_path('inter', 22)
+        draw.text((self.margin, 180), card_data.get('company', ''), fill='white', font=company_font)
         
-        # Contact info
-        contact_font = self.get_font_path('inter', 16)
-        y_pos = 220
+        # Contact info - larger and better spaced
+        contact_font = self.get_font_path('inter', 20)
+        y_pos = 240
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 draw.text((self.margin, y_pos), card_data[field], fill=colors['secondary'], font=contact_font)
-                y_pos += 25
+                y_pos += 32
         
         return img
 
@@ -268,24 +270,24 @@ END:VCARD"""
         img = Image.new('RGB', (self.card_width, self.card_height), 'white')
         draw = ImageDraw.Draw(img)
         
-        # Name
-        name_font = self.get_font_path('inter', 46, bold=True)
-        draw.text((self.margin, 100), card_data.get('name', ''), fill=colors['text'], font=name_font)
+        # Name - larger for minimal impact
+        name_font = self.get_font_path('inter', 58, bold=True)
+        draw.text((self.margin, 90), card_data.get('name', ''), fill=colors['text'], font=name_font)
         
-        # Simple line
-        draw.line([self.margin, 160, self.margin + 200, 160], fill=colors['primary'], width=2)
+        # Simple line - longer and thicker
+        draw.line([self.margin, 170, self.margin + 300, 170], fill=colors['primary'], width=3)
         
-        # Job title
-        title_font = self.get_font_path('inter', 24)
-        draw.text((self.margin, 190), card_data.get('job_title', ''), fill=colors['accent'], font=title_font)
+        # Job title - larger
+        title_font = self.get_font_path('inter', 30)
+        draw.text((self.margin, 200), card_data.get('job_title', ''), fill=colors['accent'], font=title_font)
         
-        # Contact info with minimal styling
-        contact_font = self.get_font_path('inter', 18)
-        y_pos = 250
-        for field in ['email', 'phone']:
+        # Contact info with minimal styling - larger
+        contact_font = self.get_font_path('inter', 24)
+        y_pos = 270
+        for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 30
+                y_pos += 35
         
         return img
 
@@ -294,28 +296,28 @@ END:VCARD"""
         img = Image.new('RGB', (self.card_width, self.card_height), colors['primary'])
         draw = ImageDraw.Draw(img)
         
-        # Bold design elements
-        draw.rectangle([0, 0, self.card_width, 150], fill=colors['text'])
+        # Bold design elements - taller header
+        draw.rectangle([0, 0, self.card_width, 170], fill=colors['text'])
         
-        # Name in bold
-        name_font = self.get_font_path('inter', 50, bold=True)
+        # Name in bold - larger
+        name_font = self.get_font_path('inter', 60, bold=True)
         draw.text((self.margin, 50), card_data.get('name', ''), fill='white', font=name_font)
         
-        # Job title
-        title_font = self.get_font_path('inter', 26, bold=True)
-        draw.text((self.margin, 180), card_data.get('job_title', ''), fill='white', font=title_font)
+        # Job title - larger
+        title_font = self.get_font_path('inter', 32, bold=True)
+        draw.text((self.margin, 200), card_data.get('job_title', ''), fill='white', font=title_font)
         
-        # Company
-        company_font = self.get_font_path('inter', 22)
-        draw.text((self.margin, 220), card_data.get('company', ''), fill=colors['secondary'], font=company_font)
+        # Company - better size
+        company_font = self.get_font_path('inter', 26)
+        draw.text((self.margin, 250), card_data.get('company', ''), fill=colors['secondary'], font=company_font)
         
-        # Contact info
-        contact_font = self.get_font_path('inter', 18, bold=True)
-        y_pos = 280
+        # Contact info - larger and bold
+        contact_font = self.get_font_path('inter', 22, bold=True)
+        y_pos = 310
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 draw.text((self.margin, y_pos), card_data[field], fill='white', font=contact_font)
-                y_pos += 30
+                y_pos += 35
         
         return img
 
@@ -426,32 +428,32 @@ END:VCARD"""
         img = Image.new('RGB', (self.card_width, self.card_height), 'white')
         draw = ImageDraw.Draw(img)
         
-        # Executive header
-        draw.rectangle([0, 0, self.card_width, 100], fill=colors['primary'])
-        draw.rectangle([0, 100, self.card_width, 110], fill=colors['accent'])
+        # Executive header - taller and more professional
+        draw.rectangle([0, 0, self.card_width, 120], fill=colors['primary'])
+        draw.rectangle([0, 120, self.card_width, 130], fill=colors['accent'])
         
-        # Name
-        name_font = self.get_font_path('inter', 40, bold=True)
+        # Name - larger and better positioned
+        name_font = self.get_font_path('inter', 52, bold=True)
         draw.text((self.margin, 30), card_data.get('name', ''), fill='white', font=name_font)
         
-        # Job title
-        title_font = self.get_font_path('inter', 26, bold=True)
-        draw.text((self.margin, 140), card_data.get('job_title', ''), fill=colors['primary'], font=title_font)
+        # Job title - larger and professional
+        title_font = self.get_font_path('inter', 34, bold=True)
+        draw.text((self.margin, 160), card_data.get('job_title', ''), fill=colors['primary'], font=title_font)
         
-        # Company
-        company_font = self.get_font_path('inter', 22)
-        draw.text((self.margin, 180), card_data.get('company', ''), fill=colors['text'], font=company_font)
+        # Company - better size
+        company_font = self.get_font_path('inter', 28)
+        draw.text((self.margin, 210), card_data.get('company', ''), fill=colors['text'], font=company_font)
         
-        # Professional divider
-        draw.line([self.margin, 220, self.card_width-self.margin, 220], fill=colors['accent'], width=2)
+        # Professional divider - thicker
+        draw.line([self.margin, 260, self.card_width-self.margin, 260], fill=colors['accent'], width=3)
         
-        # Contact info
-        contact_font = self.get_font_path('inter', 18)
-        y_pos = 250
+        # Contact info - larger and better spaced
+        contact_font = self.get_font_path('inter', 22)
+        y_pos = 290
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 draw.text((self.margin, y_pos), card_data[field], fill=colors['text'], font=contact_font)
-                y_pos += 30
+                y_pos += 35
         
         return img
 
