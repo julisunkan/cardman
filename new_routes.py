@@ -148,24 +148,48 @@ def export_card(format):
     generator = AdvancedCardGenerator()
     
     try:
+        # Ensure exports directory exists
+        os.makedirs('exports', exist_ok=True)
+        
         if format == 'png_hd':
             file_path = generator.export_png_hd(card_data)
-            return send_file(file_path, as_attachment=True, 
-                           download_name='business_card_hd.png')
+            if os.path.exists(file_path):
+                return send_file(file_path, as_attachment=True, 
+                               download_name='business_card_hd.png',
+                               mimetype='image/png')
+            else:
+                flash('Error: Export file not found', 'error')
+                return redirect(url_for('preview'))
+                
         elif format == 'pdf_premium':
             file_path = generator.export_premium_pdf(card_data)
-            return send_file(file_path, as_attachment=True, 
-                           download_name='business_card_premium.pdf')
+            if os.path.exists(file_path):
+                return send_file(file_path, as_attachment=True, 
+                               download_name='business_card_premium.pdf',
+                               mimetype='application/pdf')
+            else:
+                flash('Error: Export file not found', 'error')
+                return redirect(url_for('preview'))
+                
         elif format == 'pdf_print':
             file_path = generator.export_premium_pdf(card_data, print_ready=True)
-            return send_file(file_path, as_attachment=True, 
-                           download_name='business_card_print_ready.pdf')
+            if os.path.exists(file_path):
+                return send_file(file_path, as_attachment=True, 
+                               download_name='business_card_print_ready.pdf',
+                               mimetype='application/pdf')
+            else:
+                flash('Error: Export file not found', 'error')
+                return redirect(url_for('preview'))
         else:
             flash('Invalid export format', 'error')
             return redirect(url_for('preview'))
             
     except Exception as e:
-        flash(f'Error exporting card: {str(e)}', 'error')
+        import traceback
+        error_msg = f'Error exporting card: {str(e)}'
+        print(f"Export error: {error_msg}")
+        print(f"Traceback: {traceback.format_exc()}")
+        flash(error_msg, 'error')
         return redirect(url_for('preview'))
 
 @app.route('/batch')

@@ -708,28 +708,44 @@ END:VCARD"""
         filename = f"business_card_premium_{unique_id}.pdf"
         filepath = os.path.join('exports', filename)
         
+        # Ensure exports directory exists
+        os.makedirs('exports', exist_ok=True)
+        
         # Generate high-resolution card
         card_img = self.generate_card(card_data)
         
         # Create PDF with proper print settings
         if print_ready:
-            # Print-ready: CMYK, bleeds, crop marks
-            doc = SimpleDocTemplate(filepath, pagesize=(4*inch, 2.5*inch),
-                                  leftMargin=0.25*inch, rightMargin=0.25*inch,
-                                  topMargin=0.25*inch, bottomMargin=0.25*inch)
+            # Print-ready: with bleeds and crop marks
+            page_width = 4*inch
+            page_height = 2.5*inch
+            margin = 0.25*inch
         else:
-            # Standard PDF
-            doc = SimpleDocTemplate(filepath, pagesize=(3.5*inch, 2*inch),
-                                  leftMargin=0, rightMargin=0,
-                                  topMargin=0, bottomMargin=0)
+            # Standard PDF - exact business card size
+            page_width = 3.5*inch
+            page_height = 2*inch
+            margin = 0.1*inch
         
-        # Convert PIL image to ReportLab
+        doc = SimpleDocTemplate(filepath, 
+                              pagesize=(page_width, page_height),
+                              leftMargin=margin, 
+                              rightMargin=margin,
+                              topMargin=margin, 
+                              bottomMargin=margin)
+        
+        # Convert PIL image to ReportLab with proper sizing
         img_buffer = io.BytesIO()
-        card_img.save(img_buffer, format='PNG', quality=95, dpi=(300, 300))
+        card_img.save(img_buffer, format='PNG', quality=95)
         img_buffer.seek(0)
         
-        # Create ReportLab image
-        rl_img = RLImage(img_buffer, width=3.5*inch, height=2*inch)
+        # Calculate available space and scale image accordingly
+        available_width = page_width - (2 * margin)
+        available_height = page_height - (2 * margin)
+        
+        # Create ReportLab image with proper sizing
+        rl_img = RLImage(img_buffer, 
+                        width=available_width, 
+                        height=available_height)
         
         # Build PDF
         story = [rl_img]
