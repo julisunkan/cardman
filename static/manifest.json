@@ -1,0 +1,110 @@
+{
+  "name": "CardGen - Business Card Generator",
+  "short_name": "CardGen",
+  "description": "Create professional business cards with customizable templates, colors, and export options",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%232563eb'/%3E%3Cpath fill='white' d='M48 72h96c4.4 0 8 3.6 8 8v32c0 4.4-3.6 8-8 8H48c-4.4 0-8-3.6-8-8V80c0-4.4 3.6-8 8-8zm16 16v16h16V88H64zm32 0h32v4H96v-4zm0 8h24v4H96v-4z'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='64' fill='%232563eb'/%3E%3Cpath fill='white' d='M128 192h256c11.8 0 21.3 9.5 21.3 21.3v85.3c0 11.8-9.5 21.3-21.3 21.3H128c-11.8 0-21.3-9.5-21.3-21.3v-85.3c0-11.8 9.5-21.3 21.3-21.3zm42.7 42.7v42.7h42.7v-42.7h-42.7zm85.3 0h85.3v10.7h-85.3v-10.7zm0 21.3h64v10.7h-64v-10.7z'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 844'%3E%3Crect width='390' height='844' fill='%23f8fafc'/%3E%3Crect x='20' y='120' width='350' height='200' rx='12' fill='%23ffffff' stroke='%23e2e8f0'/%3E%3Ctext x='195' y='160' text-anchor='middle' fill='%23374151' font-family='sans-serif' font-size='18' font-weight='bold'%3ECreate Business Cards%3C/text%3E%3Ctext x='195' y='185' text-anchor='middle' fill='%2364748b' font-family='sans-serif' font-size='14'%3EDesign professional cards in minutes%3C/text%3E%3Crect x='145' y='210' width='100' height='40' rx='20' fill='%232563eb'/%3E%3Ctext x='195' y='235' text-anchor='middle' fill='white' font-family='sans-serif' font-size='14' font-weight='bold'%3EStart Creating%3C/text%3E%3C/svg%3E",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Home screen showing main features"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 844'%3E%3Crect width='390' height='844' fill='%23f8fafc'/%3E%3Crect x='20' y='120' width='350' height='300' rx='12' fill='%23ffffff' stroke='%23e2e8f0'/%3E%3Ctext x='195' y='160' text-anchor='middle' fill='%23374151' font-family='sans-serif' font-size='16' font-weight='bold'%3ETemplate Selection%3C/text%3E%3Crect x='40' y='180' width='80' height='50' rx='8' fill='%232563eb'/%3E%3Ctext x='80' y='210' text-anchor='middle' fill='white' font-family='sans-serif' font-size='10'%3EModern%3C/text%3E%3Crect x='140' y='180' width='80' height='50' rx='8' fill='%23e2e8f0'/%3E%3Ctext x='180' y='210' text-anchor='middle' fill='%23374151' font-family='sans-serif' font-size='10'%3EClassic%3C/text%3E%3Crect x='240' y='180' width='80' height='50' rx='8' fill='%23e2e8f0'/%3E%3Ctext x='280' y='210' text-anchor='middle' fill='%23374151' font-family='sans-serif' font-size='10'%3EElegant%3C/text%3E%3C/svg%3E",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Template selection interface"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create New Card",
+      "short_name": "Create",
+      "description": "Start creating a new business card",
+      "url": "/create",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z'/%3E%3C/svg%3E",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Batch Upload",
+      "short_name": "Batch",
+      "description": "Upload CSV for multiple cards",
+      "url": "/batch",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'%3E%3Cpath d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z'/%3E%3C/svg%3E",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "dir": "ltr",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+cardgen",
+      "url": "/create?data=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/batch",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "csv_file",
+          "accept": [".csv", "text/csv"]
+        }
+      ]
+    }
+  },
+  "file_handlers": [
+    {
+      "action": "/batch",
+      "accept": {
+        "text/csv": [".csv"]
+      }
+    }
+  ],
+  "handle_links": "preferred",
+  "capture_links": "existing-client-navigate"
+}

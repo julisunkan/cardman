@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}Preview Card - CardGen{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <div class="page-header mb-4">
+        <h1 class="page-title">
+            <i class="fas fa-eye me-2"></i>
+            Card Preview
+        </h1>
+        <p class="page-subtitle">Review your business card before exporting</p>
+    </div>
+
+    <!-- Card Preview -->
+    <div class="preview-container">
+        <div class="card-preview-wrapper">
+            <div class="card-preview-frame">
+                {% if preview_path %}
+                <img src="{{ url_for('static', filename=preview_path) }}" 
+                     alt="Business Card Preview" 
+                     class="card-preview-image"
+                     id="card-preview">
+                {% else %}
+                <div class="preview-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Preview not available</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Information -->
+    <div class="card-info-section">
+        <h2 class="section-title">Card Information</h2>
+        <div class="info-grid">
+            {% if card_data.name %}
+            <div class="info-item">
+                <div class="info-label">Name</div>
+                <div class="info-value">{{ card_data.name }}</div>
+            </div>
+            {% endif %}
+            
+            {% if card_data.job_title %}
+            <div class="info-item">
+                <div class="info-label">Job Title</div>
+                <div class="info-value">{{ card_data.job_title }}</div>
+            </div>
+            {% endif %}
+            
+            {% if card_data.company %}
+            <div class="info-item">
+                <div class="info-label">Company</div>
+                <div class="info-value">{{ card_data.company }}</div>
+            </div>
+            {% endif %}
+            
+            {% if card_data.email %}
+            <div class="info-item">
+                <div class="info-label">Email</div>
+                <div class="info-value">{{ card_data.email }}</div>
+            </div>
+            {% endif %}
+            
+            {% if card_data.phone %}
+            <div class="info-item">
+                <div class="info-label">Phone</div>
+                <div class="info-value">{{ card_data.phone }}</div>
+            </div>
+            {% endif %}
+            
+            {% if card_data.website %}
+            <div class="info-item">
+                <div class="info-label">Website</div>
+                <div class="info-value">{{ card_data.website }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Design Settings -->
+    <div class="design-info-section">
+        <h2 class="section-title">Design Settings</h2>
+        <div class="design-grid">
+            <div class="design-item">
+                <div class="design-label">Template</div>
+                <div class="design-value">{{ card_data.template.title() }}</div>
+            </div>
+            
+            <div class="design-item">
+                <div class="design-label">Color Scheme</div>
+                <div class="design-value">{{ card_data.color_scheme.title() }}</div>
+            </div>
+            
+            <div class="design-item">
+                <div class="design-label">Font Family</div>
+                <div class="design-value">{{ card_data.font_family.replace('_', ' ').title() }}</div>
+            </div>
+            
+            {% if card_data.include_qr %}
+            <div class="design-item">
+                <div class="design-label">QR Code</div>
+                <div class="design-value">
+                    <i class="fas fa-check text-success me-1"></i>
+                    Included
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Export Options -->
+    <div class="export-section">
+        <h2 class="section-title">Export Options</h2>
+        <div class="export-grid">
+            <a href="{{ url_for('export_card', format='png') }}" class="export-option">
+                <div class="export-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <div class="export-info">
+                    <h3>PNG Image</h3>
+                    <p>High-resolution image for digital use</p>
+                    <small>300 DPI • Best for web</small>
+                </div>
+                <div class="export-action">
+                    <i class="fas fa-download"></i>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('export_card', format='pdf') }}" class="export-option">
+                <div class="export-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="export-info">
+                    <h3>PDF Standard</h3>
+                    <p>Vector-based document for sharing</p>
+                    <small>Scalable • Professional</small>
+                </div>
+                <div class="export-action">
+                    <i class="fas fa-download"></i>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('export_card', format='pdf_print') }}" class="export-option">
+                <div class="export-icon">
+                    <i class="fas fa-print"></i>
+                </div>
+                <div class="export-info">
+                    <h3>PDF Print-Ready</h3>
+                    <p>Optimized for professional printing</p>
+                    <small>CMYK • Bleed areas</small>
+                </div>
+                <div class="export-action">
+                    <i class="fas fa-download"></i>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('export_card', format='html') }}" class="export-option">
+                <div class="export-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="export-info">
+                    <h3>HTML Interactive</h3>
+                    <p>Digital card with click-to-copy contacts</p>
+                    <small>Interactive • Web-ready</small>
+                </div>
+                <div class="export-action">
+                    <i class="fas fa-download"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="{{ url_for('create') }}" class="btn btn-outline-primary btn-lg touch-target">
+            <i class="fas fa-edit me-2"></i>
+            Edit Card
+        </a>
+        
+        <a href="{{ url_for('export_card', format='png') }}" class="btn btn-primary btn-lg touch-target">
+            <i class="fas fa-download me-2"></i>
+            Download PNG
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/card-preview.js') }}"></script>
+<script>
+// Add touch feedback for export options
+document.querySelectorAll('.export-option').forEach(option => {
+    option.addEventListener('touchstart', function() {
+        this.classList.add('touched');
+    });
+    
+    option.addEventListener('touchend', function() {
+        setTimeout(() => {
+            this.classList.remove('touched');
+        }, 150);
+    });
+});
+
+// Zoom functionality for card preview
+let isZoomed = false;
+const cardPreview = document.getElementById('card-preview');
+
+if (cardPreview) {
+    cardPreview.addEventListener('click', function() {
+        if (isZoomed) {
+            this.style.transform = 'scale(1)';
+            this.style.cursor = 'zoom-in';
+            isZoomed = false;
+        } else {
+            this.style.transform = 'scale(1.5)';
+            this.style.cursor = 'zoom-out';
+            isZoomed = true;
+        }
+    });
+}
+
+// Loading states for download buttons
+document.querySelectorAll('.export-option, .btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        if (this.href && this.href.includes('/export/')) {
+            const originalText = this.innerHTML;
+            this.innerHTML = this.innerHTML.replace(/fas fa-\w+/, 'fas fa-spinner fa-spin');
+            
+            setTimeout(() => {
+                this.innerHTML = originalText;
+            }, 2000);
+        }
+    });
+});
+
+// Auto-refresh preview if data changes
+if ('cardData' in localStorage) {
+    const lastModified = localStorage.getItem('cardDataModified');
+    const currentTime = Date.now();
+    
+    if (lastModified && (currentTime - parseInt(lastModified)) < 60000) {
+        // Data was modified recently, show refresh option
+        const refreshBanner = document.createElement('div');
+        refreshBanner.className = 'alert alert-info alert-dismissible fade show';
+        refreshBanner.innerHTML = `
+            <i class="fas fa-info-circle me-2"></i>
+            Your card data may have changed. 
+            <a href="#" onclick="location.reload()" class="alert-link">Refresh preview</a>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.querySelector('.main-content').insertBefore(
+            refreshBanner, 
+            document.querySelector('.page-header')
+        );
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}CardGen - Business Card Generator{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <!-- Hero Section -->
+    <div class="hero-section text-center mb-5">
+        <div class="hero-icon mb-3">
+            <i class="fas fa-id-card"></i>
+        </div>
+        <h1 class="hero-title">Create Professional Business Cards</h1>
+        <p class="hero-subtitle">Design, customize, and export beautiful business cards in minutes</p>
+        
+        <div class="cta-buttons mt-4">
+            <a href="{{ url_for('create') }}" class="btn btn-primary btn-lg touch-target">
+                <i class="fas fa-plus me-2"></i>
+                Start Creating
+            </a>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-palette"></i>
+            </div>
+            <h3>13+ Templates</h3>
+            <p>Choose from Modern, Classic, Creative, Elegant, and more professional designs</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-swatchbook"></i>
+            </div>
+            <h3>15+ Color Schemes</h3>
+            <p>Customize with beautiful color palettes to match your brand</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-qrcode"></i>
+            </div>
+            <h3>QR Code Integration</h3>
+            <p>Add vCard QR codes for instant contact sharing</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-download"></i>
+            </div>
+            <h3>Multiple Formats</h3>
+            <p>Export as PNG, PDF, or interactive HTML cards</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-upload"></i>
+            </div>
+            <h3>Logo Upload</h3>
+            <p>Add your company logo with support for multiple formats</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-layer-group"></i>
+            </div>
+            <h3>Batch Processing</h3>
+            <p>Generate multiple cards from CSV data</p>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions mt-5">
+        <h2 class="section-title text-center mb-4">Quick Actions</h2>
+        <div class="action-grid">
+            <a href="{{ url_for('create') }}" class="action-card">
+                <i class="fas fa-plus"></i>
+                <span>Create New Card</span>
+            </a>
+            
+            <a href="{{ url_for('batch') }}" class="action-card">
+                <i class="fas fa-file-csv"></i>
+                <span>Batch Upload</span>
+            </a>
+            
+            <a href="{{ url_for('preview') }}" class="action-card">
+                <i class="fas fa-eye"></i>
+                <span>Preview Card</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Template Preview -->
+    <div class="template-showcase mt-5">
+        <h2 class="section-title text-center mb-4">Template Styles</h2>
+        <div class="template-preview-grid">
+            <div class="template-preview modern">
+                <div class="preview-header"></div>
+                <div class="preview-content">
+                    <div class="preview-text"></div>
+                    <div class="preview-text small"></div>
+                </div>
+                <span class="template-name">Modern</span>
+            </div>
+            
+            <div class="template-preview classic">
+                <div class="preview-border"></div>
+                <div class="preview-content">
+                    <div class="preview-text"></div>
+                    <div class="preview-line"></div>
+                    <div class="preview-text small"></div>
+                </div>
+                <span class="template-name">Classic</span>
+            </div>
+            
+            <div class="template-preview creative">
+                <div class="preview-shape"></div>
+                <div class="preview-content">
+                    <div class="preview-text"></div>
+                    <div class="preview-text small"></div>
+                </div>
+                <span class="template-name">Creative</span>
+            </div>
+            
+            <div class="template-preview elegant">
+                <div class="preview-frame"></div>
+                <div class="preview-content">
+                    <div class="preview-text"></div>
+                    <div class="preview-text small"></div>
+                </div>
+                <span class="template-name">Elegant</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Add touch feedback for action cards
+document.querySelectorAll('.action-card, .feature-card').forEach(card => {
+    card.addEventListener('touchstart', function() {
+        this.classList.add('touched');
+    });
+    
+    card.addEventListener('touchend', function() {
+        setTimeout(() => {
+            this.classList.remove('touched');
+        }, 150);
+    });
+});
+
+// Animate feature cards on scroll
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.feature-card').forEach(card => {
+    observer.observe(card);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block title %}Create Card - CardGen{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <div class="page-header mb-4">
+        <h1 class="page-title">
+            <i class="fas fa-plus me-2"></i>
+            Create Business Card
+        </h1>
+        <p class="page-subtitle">Fill in your information and customize your card</p>
+    </div>
+
+    <form action="{{ url_for('save_card_data') }}" method="POST" enctype="multipart/form-data" class="card-form">
+        <!-- Personal Information Section -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-user me-2"></i>
+                Personal Information
+            </h2>
+            
+            <div class="form-group">
+                <label for="name" class="form-label">Full Name *</label>
+                <input type="text" class="form-control" id="name" name="name" 
+                       value="{{ card_data.name }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="job_title" class="form-label">Job Title</label>
+                <input type="text" class="form-control" id="job_title" name="job_title"
+                       value="{{ card_data.job_title }}" placeholder="e.g., Senior Developer">
+            </div>
+            
+            <div class="form-group">
+                <label for="company" class="form-label">Company</label>
+                <input type="text" class="form-control" id="company" name="company"
+                       value="{{ card_data.company }}" placeholder="Your company name">
+            </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-address-book me-2"></i>
+                Contact Information
+            </h2>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email"
+                       value="{{ card_data.email }}" placeholder="your@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="phone" name="phone"
+                       value="{{ card_data.phone }}" placeholder="+1 (555) 123-4567">
+            </div>
+            
+            <div class="form-group">
+                <label for="website" class="form-label">Website</label>
+                <input type="url" class="form-control" id="website" name="website"
+                       value="{{ card_data.website }}" placeholder="https://yourwebsite.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" name="address" rows="2"
+                          placeholder="Your business address">{{ card_data.address }}</textarea>
+            </div>
+        </div>
+
+        <!-- Social Media Section -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-share-alt me-2"></i>
+                Social Media
+            </h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="social_platform" class="form-label">Platform</label>
+                        <select class="form-select" id="social_platform" name="social_platform">
+                            <option value="">Select Platform</option>
+                            <option value="linkedin" {{ 'selected' if card_data.social_platform == 'linkedin' }}>LinkedIn</option>
+                            <option value="twitter" {{ 'selected' if card_data.social_platform == 'twitter' }}>Twitter</option>
+                            <option value="facebook" {{ 'selected' if card_data.social_platform == 'facebook' }}>Facebook</option>
+                            <option value="instagram" {{ 'selected' if card_data.social_platform == 'instagram' }}>Instagram</option>
+                            <option value="github" {{ 'selected' if card_data.social_platform == 'github' }}>GitHub</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="social_handle" class="form-label">Handle/Username</label>
+                        <input type="text" class="form-control" id="social_handle" name="social_handle"
+                               value="{{ card_data.social_handle }}" placeholder="@username">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design Customization Section -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-palette me-2"></i>
+                Design Customization
+            </h2>
+            
+            <!-- Template Selection -->
+            <div class="form-group">
+                <label class="form-label">Template Style</label>
+                <div class="template-grid" id="template-grid">
+                    {% set templates = [
+                        ('modern', 'Modern'),
+                        ('classic', 'Classic'),
+                        ('creative', 'Creative'),
+                        ('elegant', 'Elegant'),
+                        ('tech', 'Tech'),
+                        ('corporate', 'Corporate'),
+                        ('artistic', 'Artistic'),
+                        ('minimal', 'Minimal'),
+                        ('bold', 'Bold'),
+                        ('vintage', 'Vintage'),
+                        ('geometric', 'Geometric'),
+                        ('gradient', 'Gradient'),
+                        ('executive', 'Executive')
+                    ] %}
+                    
+                    {% for template_id, template_name in templates %}
+                    <label class="template-option {{ 'selected' if card_data.template == template_id }}">
+                        <input type="radio" name="template" value="{{ template_id }}" 
+                               {{ 'checked' if card_data.template == template_id }}>
+                        <div class="template-preview {{ template_id }}">
+                            <div class="preview-content">
+                                <div class="preview-header"></div>
+                                <div class="preview-text"></div>
+                                <div class="preview-text small"></div>
+                            </div>
+                        </div>
+                        <span class="template-name">{{ template_name }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Color Scheme -->
+            <div class="form-group">
+                <label class="form-label">Color Scheme</label>
+                <div class="color-grid">
+                    {% set colors = [
+                        ('blue', '#2563eb'),
+                        ('red', '#dc2626'),
+                        ('green', '#059669'),
+                        ('purple', '#7c3aed'),
+                        ('orange', '#ea580c'),
+                        ('teal', '#0d9488'),
+                        ('pink', '#db2777'),
+                        ('indigo', '#4338ca'),
+                        ('gray', '#374151'),
+                        ('yellow', '#d97706'),
+                        ('cyan', '#0891b2'),
+                        ('emerald', '#047857'),
+                        ('rose', '#e11d48'),
+                        ('amber', '#d97706'),
+                        ('lime', '#65a30d'),
+                        ('black', '#000000')
+                    ] %}
+                    
+                    {% for color_id, color_value in colors %}
+                    <label class="color-option {{ 'selected' if card_data.color_scheme == color_id }}">
+                        <input type="radio" name="color_scheme" value="{{ color_id }}"
+                               {{ 'checked' if card_data.color_scheme == color_id }}>
+                        <div class="color-swatch" style="background-color: {{ color_value }}"></div>
+                        <span class="color-name">{{ color_id.title() }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Font Family -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="font_family" class="form-label">Font Family</label>
+                        <select class="form-select" id="font_family" name="font_family">
+                            {% set fonts = [
+                                ('inter', 'Inter'),
+                                ('roboto', 'Roboto'),
+                                ('open_sans', 'Open Sans'),
+                                ('lato', 'Lato'),
+                                ('montserrat', 'Montserrat'),
+                                ('poppins', 'Poppins'),
+                                ('nunito', 'Nunito'),
+                                ('source_sans', 'Source Sans Pro'),
+                                ('ubuntu', 'Ubuntu'),
+                                ('raleway', 'Raleway'),
+                                ('oswald', 'Oswald'),
+                                ('merriweather', 'Merriweather')
+                            ] %}
+                            
+                            {% for font_id, font_name in fonts %}
+                            <option value="{{ font_id }}" {{ 'selected' if card_data.font_family == font_id }}>
+                                {{ font_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="text_align" class="form-label">Text Alignment</label>
+                        <select class="form-select" id="text_align" name="text_align">
+                            <option value="left" {{ 'selected' if card_data.text_align == 'left' }}>Left</option>
+                            <option value="center" {{ 'selected' if card_data.text_align == 'center' }}>Center</option>
+                            <option value="right" {{ 'selected' if card_data.text_align == 'right' }}>Right</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logo Upload Section -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-image me-2"></i>
+                Logo Upload
+            </h2>
+            
+            <div class="form-group">
+                <label for="logo" class="form-label">Company Logo</label>
+                <div class="file-upload-area" id="file-upload-area">
+                    <input type="file" class="form-control" id="logo" name="logo" 
+                           accept=".png,.jpg,.jpeg,.gif,.svg" style="display: none;">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Tap to upload logo</p>
+                        <small>PNG, JPG, GIF, SVG up to 16MB</small>
+                    </div>
+                </div>
+                {% if card_data.logo_path %}
+                <div class="current-logo mt-2">
+                    <small class="text-muted">Current logo: {{ card_data.logo_path.split('/')[-1] }}</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- QR Code Section -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-qrcode me-2"></i>
+                QR Code
+            </h2>
+            
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="include_qr" name="include_qr"
+                       {{ 'checked' if card_data.include_qr }}>
+                <label class="form-check-label" for="include_qr">
+                    Include vCard QR code for contact sharing
+                </label>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg touch-target w-100">
+                <i class="fas fa-eye me-2"></i>
+                Preview Card
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/templates.js') }}"></script>
+<script>
+// File upload handling
+document.getElementById('file-upload-area').addEventListener('click', function() {
+    document.getElementById('logo').click();
+});
+
+document.getElementById('logo').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const uploadArea = document.getElementById('file-upload-area');
+        uploadArea.innerHTML = `
+            <div class="upload-content">
+                <i class="fas fa-check-circle text-success"></i>
+                <p>${file.name}</p>
+                <small>${(file.size / 1024 / 1024).toFixed(2)} MB</small>
+            </div>
+        `;
+    }
+});
+
+// Template selection handling
+document.querySelectorAll('input[name="template"]').forEach(input => {
+    input.addEventListener('change', function() {
+        document.querySelectorAll('.template-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        this.closest('.template-option').classList.add('selected');
+    });
+});
+
+// Color scheme selection handling
+document.querySelectorAll('input[name="color_scheme"]').forEach(input => {
+    input.addEventListener('change', function() {
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        this.closest('.color-option').classList.add('selected');
+    });
+});
+
+// Form validation
+document.querySelector('.card-form').addEventListener('submit', function(e) {
+    const name = document.getElementById('name').value.trim();
+    if (!name) {
+        e.preventDefault();
+        alert('Please enter your name');
+        document.getElementById('name').focus();
+        return;
+    }
+});
+
+// Auto-save to session storage
+function autoSave() {
+    const formData = new FormData(document.querySelector('.card-form'));
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        data[key] = value;
+    }
+    localStorage.setItem('cardData', JSON.stringify(data));
+}
+
+// Auto-save every 5 seconds
+setInterval(autoSave, 5000);
+
+// Load saved data on page load
+window.addEventListener('load', function() {
+    const savedData = localStorage.getItem('cardData');
+    if (savedData) {
+        const data = JSON.parse(savedData);
+        for (let key in data) {
+            const element = document.querySelector(`[name="${key}"]`);
+            if (element && element.type === 'checkbox') {
+                element.checked = data[key] === 'on';
+            } else if (element && element.type === 'radio') {
+                const radio = document.querySelector(`[name="${key}"][value="${data[key]}"]`);
+                if (radio) radio.checked = true;
+            } else if (element) {
+                element.value = data[key];
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

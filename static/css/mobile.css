@@ -1,0 +1,495 @@
+/* Mobile-First Styles */
+
+/* Mobile Status Bar */
+.mobile-status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(135deg, #000, #333);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1050;
+    user-select: none;
+}
+
+.status-left {
+    display: flex;
+    align-items: center;
+}
+
+.status-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-right i {
+    font-size: 10px;
+}
+
+/* App Header */
+.app-header {
+    position: fixed;
+    top: 30px;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 1040;
+    box-shadow: var(--shadow-md);
+}
+
+.app-logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.app-title {
+    margin-left: 0.5rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-actions .btn-link {
+    color: white;
+    text-decoration: none;
+}
+
+.header-actions .btn-link:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: var(--surface);
+    border-top: 1px solid var(--border-color);
+    z-index: 1040;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-items {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 1rem;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--text-light);
+    transition: var(--transition);
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    min-width: 60px;
+    text-align: center;
+}
+
+.nav-item:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.nav-item i {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.nav-item span {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Touch Interactions */
+.touch-feedback {
+    position: relative;
+    overflow: hidden;
+}
+
+.touch-feedback::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.touch-feedback.touched::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Swipe Gestures */
+.swipe-container {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.swipe-container::-webkit-scrollbar {
+    display: none;
+}
+
+.swipe-item {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    /* Ensure touch targets are minimum 44px */
+    .btn, .nav-item, .template-option, .color-option, .export-option {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Larger form controls for easier touch */
+    .form-control, .form-select {
+        padding: 1rem;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Template grid optimizations */
+    .template-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .template-option {
+        padding: 0.75rem;
+    }
+    
+    /* Color grid optimizations */
+    .color-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .color-option {
+        padding: 0.5rem;
+    }
+    
+    .color-swatch {
+        width: 30px;
+        height: 30px;
+    }
+    
+    /* Feature cards stack on mobile */
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+    }
+    
+    /* Action grid responsive */
+    .action-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    /* Export options stack */
+    .export-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    /* Form sections responsive padding */
+    .form-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Button spacing */
+    .action-buttons {
+        gap: 0.75rem;
+    }
+    
+    /* Modal-like card preview */
+    .card-preview-frame {
+        padding: 1rem;
+        margin: 0 1rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    
+    .page-title {
+        font-size: 1.25rem;
+    }
+    
+    .section-title {
+        font-size: 1.25rem;
+    }
+    
+    .template-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .color-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .form-section {
+        padding: 1rem;
+    }
+    
+    .btn-lg {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .main-content {
+        padding-top: 100px;
+        padding-bottom: 70px;
+    }
+    
+    .mobile-status-bar {
+        height: 25px;
+        font-size: 11px;
+    }
+    
+    .app-header {
+        top: 25px;
+        height: 60px;
+    }
+    
+    .bottom-nav {
+        height: 70px;
+    }
+    
+    .hero-section {
+        padding: 2rem 0;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .mobile-status-bar {
+        background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    }
+    
+    .app-header {
+        background: linear-gradient(135deg, #1e293b, #334155);
+    }
+    
+    .bottom-nav {
+        background: #1e293b;
+        border-top-color: #334155;
+    }
+    
+    .nav-item {
+        color: #94a3b8;
+    }
+    
+    .nav-item:hover,
+    .nav-item.active {
+        color: #60a5fa;
+        background: rgba(96, 165, 250, 0.1);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .mobile-status-bar,
+    .app-header {
+        background: #000;
+        color: #fff;
+    }
+    
+    .bottom-nav {
+        background: #fff;
+        border-top: 2px solid #000;
+    }
+    
+    .nav-item {
+        color: #000;
+    }
+    
+    .nav-item:hover,
+    .nav-item.active {
+        background: #000;
+        color: #fff;
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .touch-feedback::after,
+    .btn,
+    .nav-item,
+    .template-option,
+    .color-option,
+    .export-option,
+    .feature-card,
+    .action-card {
+        transition: none;
+    }
+    
+    .card-preview-image {
+        transition: none;
+    }
+}
+
+/* Focus styles for keyboard navigation */
+.nav-item:focus,
+.btn:focus,
+.template-option:focus,
+.color-option:focus,
+.export-option:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Safe area insets for devices with notches */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .mobile-status-bar {
+        padding-top: env(safe-area-inset-top);
+        height: calc(30px + env(safe-area-inset-top));
+    }
+    
+    .app-header {
+        top: calc(30px + env(safe-area-inset-top));
+    }
+    
+    .main-content {
+        padding-top: calc(120px + env(safe-area-inset-top));
+        padding-bottom: calc(100px + env(safe-area-inset-bottom));
+    }
+    
+    .bottom-nav {
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(80px + env(safe-area-inset-bottom));
+    }
+}
+
+/* Haptic feedback simulation */
+.haptic-light {
+    animation: haptic-light 0.1s ease-out;
+}
+
+.haptic-medium {
+    animation: haptic-medium 0.15s ease-out;
+}
+
+.haptic-heavy {
+    animation: haptic-heavy 0.2s ease-out;
+}
+
+@keyframes haptic-light {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+}
+
+@keyframes haptic-medium {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+@keyframes haptic-heavy {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.92); }
+    100% { transform: scale(1); }
+}
+
+/* Loading states */
+.loading {
+    position: relative;
+    color: transparent;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Pull to refresh indicator */
+.pull-refresh {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.pull-refresh.visible {
+    opacity: 1;
+    top: 20px;
+}
+
+.pull-refresh i {
+    font-size: 1.2rem;
+    animation: spin 1s linear infinite;
+}
