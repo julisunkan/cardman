@@ -114,11 +114,8 @@ class AdvancedCardGenerator:
                 except:
                     continue
             
-            # Ultimate fallback with better size
-            try:
-                return ImageFont.load_default().font_variant(size=size)
-            except:
-                return ImageFont.load_default()
+            # Ultimate fallback
+            return ImageFont.load_default()
         except:
             return ImageFont.load_default()
 
@@ -423,33 +420,38 @@ END:VCARD"""
         accent_points = [(0, 0), (300, 0), (200, 150), (0, 150)]
         draw.polygon(accent_points, fill=colors['light'] + '40')
         
-        # Typography with modern hierarchy
-        name_font = self.get_professional_font('sans_modern', 68, 'bold')
-        draw.text((self.safe_zone, 80), card_data.get('name', ''), 
-                 fill='white', font=name_font)
+        # Typography with modern hierarchy and custom formatting
+        name_settings = self.get_text_settings(card_data, 'name')
+        self.draw_formatted_text(draw, card_data.get('name', ''), 
+                               self.safe_zone, 80, name_settings,
+                               {'text': 'white', 'primary': colors['primary'], 'accent': colors['accent']})
         
-        # Modern subtitle
-        title_font = self.get_professional_font('sans_modern', 28)
-        draw.text((self.safe_zone, 160), card_data.get('job_title', ''), 
-                 fill='white', font=title_font)
+        # Modern subtitle with custom formatting
+        title_settings = self.get_text_settings(card_data, 'title')
+        title_y = 80 + name_settings['size'] + 20
+        self.draw_formatted_text(draw, card_data.get('job_title', ''), 
+                               self.safe_zone, title_y, title_settings,
+                               {'text': 'white', 'primary': colors['primary'], 'accent': colors['accent']})
         
-        # Company with style
-        company_font = self.get_professional_font('sans_modern', 24, 'light')
-        draw.text((self.safe_zone, 200), card_data.get('company', ''), 
-                 fill=colors['light'], font=company_font)
+        # Company with custom formatting
+        company_settings = self.get_text_settings(card_data, 'company')
+        company_y = title_y + title_settings['size'] + 15
+        self.draw_formatted_text(draw, card_data.get('company', ''), 
+                               self.safe_zone, company_y, company_settings,
+                               {'text': colors['light'], 'primary': colors['primary'], 'accent': colors['accent']})
         
-        # Modern contact layout
-        contact_font = self.get_professional_font('sans_modern', 22)
-        contact_y = 280
+        # Modern contact layout with custom formatting
+        contact_settings = self.get_text_settings(card_data, 'contact')
+        contact_y = company_y + company_settings['size'] + 40
         
         for field in ['email', 'phone', 'website']:
             if card_data.get(field):
                 # Modern bullet point
-                draw.ellipse([self.safe_zone, contact_y + 8, 
-                             self.safe_zone + 8, contact_y + 16], fill='white')
-                draw.text((self.safe_zone + 20, contact_y), card_data[field], 
-                         fill='white', font=contact_font)
-                contact_y += 35
+                draw.ellipse([self.safe_zone, contact_y + contact_settings['size']//3, 
+                             self.safe_zone + 8, contact_y + contact_settings['size']//3 + 8], fill='white')
+                self.draw_formatted_text(draw, card_data[field], self.safe_zone + 20, contact_y, contact_settings,
+                                       {'text': 'white', 'primary': colors['primary'], 'accent': colors['accent']})
+                contact_y += contact_settings['size'] + 15
         
         return img
 
@@ -465,36 +467,39 @@ END:VCARD"""
         draw.rectangle([accent_x, accent_y, accent_x + 120, accent_y + accent_size], 
                       fill=colors['primary'])
         
-        # Perfect typography hierarchy
-        name_font = self.get_professional_font('sans_modern', 72, 'light')
+        # Perfect typography hierarchy with custom formatting
+        name_settings = self.get_text_settings(card_data, 'name')
         name_y = accent_y + 30
-        draw.text((accent_x, name_y), card_data.get('name', ''), 
-                 fill=colors['text'], font=name_font)
+        self.draw_formatted_text(draw, card_data.get('name', ''), 
+                               accent_x, name_y, name_settings,
+                               {'text': colors['text'], 'primary': colors['primary'], 'accent': colors['accent']})
         
-        # Minimal spacing
-        title_font = self.get_professional_font('sans_modern', 26)
-        title_y = name_y + 90
-        draw.text((accent_x, title_y), card_data.get('job_title', ''), 
-                 fill=colors['accent'], font=title_font)
+        # Minimal spacing with custom formatting
+        title_settings = self.get_text_settings(card_data, 'title')
+        title_y = name_y + name_settings['size'] + 20
+        self.draw_formatted_text(draw, card_data.get('job_title', ''), 
+                               accent_x, title_y, title_settings,
+                               {'text': colors['accent'], 'primary': colors['primary'], 'accent': colors['accent']})
         
-        # Company
-        company_font = self.get_professional_font('sans_modern', 24, 'light')
-        company_y = title_y + 40
-        draw.text((accent_x, company_y), card_data.get('company', ''), 
-                 fill=colors['text'], font=company_font)
+        # Company with custom formatting
+        company_settings = self.get_text_settings(card_data, 'company')
+        company_y = title_y + title_settings['size'] + 15
+        self.draw_formatted_text(draw, card_data.get('company', ''), 
+                               accent_x, company_y, company_settings,
+                               {'text': colors['text'], 'primary': colors['primary'], 'accent': colors['accent']})
         
-        # Minimal contact list
-        contact_font = self.get_professional_font('sans_modern', 20)
-        contact_y = company_y + 80
+        # Minimal contact list with custom formatting
+        contact_settings = self.get_text_settings(card_data, 'contact')
+        contact_y = company_y + company_settings['size'] + 40
         
         contacts = [card_data.get('email', ''), card_data.get('phone', ''), 
                    card_data.get('website', '')]
         
         for contact in contacts:
             if contact:
-                draw.text((accent_x, contact_y), contact, 
-                         fill=colors['text'], font=contact_font)
-                contact_y += 30
+                self.draw_formatted_text(draw, contact, accent_x, contact_y, contact_settings,
+                                       {'text': colors['text'], 'primary': colors['primary'], 'accent': colors['accent']})
+                contact_y += contact_settings['size'] + 10
         
         # Minimal QR if needed
         if card_data.get('include_qr', False):
@@ -519,10 +524,11 @@ END:VCARD"""
             color = colors['accent'] + f'{alpha:02x}'
             draw.ellipse([x, y, x + size, y + size], fill=color)
         
-        # Artistic name placement
-        name_font = self.get_professional_font('sans_modern', 64, 'bold')
-        draw.text((self.safe_zone, 120), card_data.get('name', ''), 
-                 fill=colors['primary'], font=name_font)
+        # Artistic name placement with custom formatting
+        name_settings = self.get_text_settings(card_data, 'name')
+        self.draw_formatted_text(draw, card_data.get('name', ''), 
+                               self.safe_zone, 120, name_settings,
+                               {'text': colors['primary'], 'primary': colors['primary'], 'accent': colors['accent']})
         
         # Creative title styling
         title_font = self.get_professional_font('sans_modern', 32)
@@ -854,13 +860,22 @@ END:VCARD"""
         img_aspect = card_img.width / card_img.height
         available_aspect = available_width / available_height
         
+        # Scale more conservatively to ensure it fits
         if img_aspect > available_aspect:
             # Image is wider, scale by width
-            final_width = available_width * 0.95  # 95% of available space for safety
+            final_width = available_width * 0.85  # 85% of available space for safety
             final_height = final_width / img_aspect
         else:
             # Image is taller, scale by height
-            final_height = available_height * 0.95  # 95% of available space for safety
+            final_height = available_height * 0.85  # 85% of available space for safety
+            final_width = final_height * img_aspect
+        
+        # Double check the dimensions don't exceed available space
+        if final_width > available_width:
+            final_width = available_width * 0.8
+            final_height = final_width / img_aspect
+        if final_height > available_height:
+            final_height = available_height * 0.8
             final_width = final_height * img_aspect
         
         # Create ReportLab image with proper sizing
