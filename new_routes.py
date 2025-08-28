@@ -59,12 +59,34 @@ def save_card_data():
     if 'card_data' not in session:
         session['card_data'] = {}
     
-    # Update session with all form data
+    # Update session with all form data including text formatting
     form_fields = [
         'name', 'job_title', 'company', 'email', 'phone', 'website', 'address',
         'social_platform', 'social_handle', 'notes', 'template', 'color_scheme', 
-        'font_family', 'text_align', 'industry', 'style_preference'
+        'font_family', 'text_align', 'industry', 'style_preference',
+        # Text formatting options
+        'name_size', 'name_font', 'name_align', 'title_size', 'title_font', 'title_align',
+        'company_size', 'company_font', 'company_align', 'contact_size', 'contact_font', 'contact_align'
     ]
+    
+    # Handle numeric fields
+    numeric_fields = ['name_size', 'title_size', 'company_size', 'contact_size']
+    
+    for field in form_fields:
+        if field in numeric_fields:
+            try:
+                session['card_data'][field] = int(request.form.get(field, 0))
+            except (ValueError, TypeError):
+                session['card_data'][field] = {
+                    'name_size': 72, 'title_size': 32, 'company_size': 28, 'contact_size': 24
+                }.get(field, 24)
+        else:
+            session['card_data'][field] = request.form.get(field, '')
+    
+    # Handle boolean checkboxes for text formatting
+    boolean_fields = ['name_bold', 'name_italic', 'title_bold', 'title_italic', 'company_bold', 'company_italic']
+    for field in boolean_fields:
+        session['card_data'][field] = field in request.form
     
     for field in form_fields:
         session['card_data'][field] = request.form.get(field, '')

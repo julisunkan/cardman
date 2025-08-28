@@ -297,6 +297,177 @@
                 </div>
             </div>
 
+            <!-- Text Formatting Options -->
+            <div class="form-card">
+                <h3 class="section-title">
+                    <i class="fas fa-font"></i>
+                    Text Formatting
+                </h3>
+                
+                <!-- Name Formatting -->
+                <div class="mb-4">
+                    <h5 class="text-primary mb-3">Name Formatting</h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="name_size" class="form-label">Size</label>
+                            <input type="range" class="form-range" id="name_size" name="name_size" 
+                                   min="40" max="100" value="{{ card_data.get('name_size', 72) }}"
+                                   oninput="document.getElementById('name_size_value').textContent = this.value + 'px'">
+                            <div class="text-center"><small id="name_size_value">{{ card_data.get('name_size', 72) }}px</small></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="name_font" class="form-label">Font</label>
+                            <select class="form-select" id="name_font" name="name_font">
+                                <option value="sans_modern" {{ 'selected' if card_data.get('name_font') == 'sans_modern' }}>Modern Sans</option>
+                                <option value="serif_elegant" {{ 'selected' if card_data.get('name_font') == 'serif_elegant' }}>Elegant Serif</option>
+                                <option value="sans_rounded" {{ 'selected' if card_data.get('name_font') == 'sans_rounded' }}>Rounded</option>
+                                <option value="mono_tech" {{ 'selected' if card_data.get('name_font') == 'mono_tech' }}>Monospace</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Style</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="name_bold" name="name_bold" 
+                                       {{ 'checked' if card_data.get('name_bold', True) }}>
+                                <label class="form-check-label" for="name_bold">Bold</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="name_italic" name="name_italic" 
+                                       {{ 'checked' if card_data.get('name_italic', False) }}>
+                                <label class="form-check-label" for="name_italic">Italic</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="name_align" class="form-label">Alignment</label>
+                            <select class="form-select" id="name_align" name="name_align">
+                                <option value="left" {{ 'selected' if card_data.get('name_align') == 'left' }}>Left</option>
+                                <option value="center" {{ 'selected' if card_data.get('name_align') == 'center' }}>Center</option>
+                                <option value="right" {{ 'selected' if card_data.get('name_align') == 'right' }}>Right</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Title Formatting -->
+                <div class="mb-4">
+                    <h5 class="text-primary mb-3">Job Title Formatting</h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="title_size" class="form-label">Size</label>
+                            <input type="range" class="form-range" id="title_size" name="title_size" 
+                                   min="20" max="50" value="{{ card_data.get('title_size', 32) }}"
+                                   oninput="document.getElementById('title_size_value').textContent = this.value + 'px'">
+                            <div class="text-center"><small id="title_size_value">{{ card_data.get('title_size', 32) }}px</small></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="title_font" class="form-label">Font</label>
+                            <select class="form-select" id="title_font" name="title_font">
+                                <option value="sans_modern" {{ 'selected' if card_data.get('title_font') == 'sans_modern' }}>Modern Sans</option>
+                                <option value="serif_elegant" {{ 'selected' if card_data.get('title_font') == 'serif_elegant' }}>Elegant Serif</option>
+                                <option value="sans_rounded" {{ 'selected' if card_data.get('title_font') == 'sans_rounded' }}>Rounded</option>
+                                <option value="mono_tech" {{ 'selected' if card_data.get('title_font') == 'mono_tech' }}>Monospace</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Style</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="title_bold" name="title_bold" 
+                                       {{ 'checked' if card_data.get('title_bold', False) }}>
+                                <label class="form-check-label" for="title_bold">Bold</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="title_italic" name="title_italic" 
+                                       {{ 'checked' if card_data.get('title_italic', False) }}>
+                                <label class="form-check-label" for="title_italic">Italic</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="title_align" class="form-label">Alignment</label>
+                            <select class="form-select" id="title_align" name="title_align">
+                                <option value="left" {{ 'selected' if card_data.get('title_align') == 'left' }}>Left</option>
+                                <option value="center" {{ 'selected' if card_data.get('title_align') == 'center' }}>Center</option>
+                                <option value="right" {{ 'selected' if card_data.get('title_align') == 'right' }}>Right</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Formatting -->
+                <div class="mb-4">
+                    <h5 class="text-primary mb-3">Company Formatting</h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="company_size" class="form-label">Size</label>
+                            <input type="range" class="form-range" id="company_size" name="company_size" 
+                                   min="18" max="40" value="{{ card_data.get('company_size', 28) }}"
+                                   oninput="document.getElementById('company_size_value').textContent = this.value + 'px'">
+                            <div class="text-center"><small id="company_size_value">{{ card_data.get('company_size', 28) }}px</small></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="company_font" class="form-label">Font</label>
+                            <select class="form-select" id="company_font" name="company_font">
+                                <option value="sans_modern" {{ 'selected' if card_data.get('company_font') == 'sans_modern' }}>Modern Sans</option>
+                                <option value="serif_elegant" {{ 'selected' if card_data.get('company_font') == 'serif_elegant' }}>Elegant Serif</option>
+                                <option value="sans_rounded" {{ 'selected' if card_data.get('company_font') == 'sans_rounded' }}>Rounded</option>
+                                <option value="mono_tech" {{ 'selected' if card_data.get('company_font') == 'mono_tech' }}>Monospace</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Style</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="company_bold" name="company_bold" 
+                                       {{ 'checked' if card_data.get('company_bold', False) }}>
+                                <label class="form-check-label" for="company_bold">Bold</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="company_italic" name="company_italic" 
+                                       {{ 'checked' if card_data.get('company_italic', False) }}>
+                                <label class="form-check-label" for="company_italic">Italic</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="company_align" class="form-label">Alignment</label>
+                            <select class="form-select" id="company_align" name="company_align">
+                                <option value="left" {{ 'selected' if card_data.get('company_align') == 'left' }}>Left</option>
+                                <option value="center" {{ 'selected' if card_data.get('company_align') == 'center' }}>Center</option>
+                                <option value="right" {{ 'selected' if card_data.get('company_align') == 'right' }}>Right</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info Formatting -->
+                <div class="mb-4">
+                    <h5 class="text-primary mb-3">Contact Info Formatting</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="contact_size" class="form-label">Size</label>
+                            <input type="range" class="form-range" id="contact_size" name="contact_size" 
+                                   min="16" max="32" value="{{ card_data.get('contact_size', 24) }}"
+                                   oninput="document.getElementById('contact_size_value').textContent = this.value + 'px'">
+                            <div class="text-center"><small id="contact_size_value">{{ card_data.get('contact_size', 24) }}px</small></div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="contact_font" class="form-label">Font</label>
+                            <select class="form-select" id="contact_font" name="contact_font">
+                                <option value="sans_modern" {{ 'selected' if card_data.get('contact_font') == 'sans_modern' }}>Modern Sans</option>
+                                <option value="serif_elegant" {{ 'selected' if card_data.get('contact_font') == 'serif_elegant' }}>Elegant Serif</option>
+                                <option value="sans_rounded" {{ 'selected' if card_data.get('contact_font') == 'sans_rounded' }}>Rounded</option>
+                                <option value="mono_tech" {{ 'selected' if card_data.get('contact_font') == 'mono_tech' }}>Monospace</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="contact_align" class="form-label">Alignment</label>
+                            <select class="form-select" id="contact_align" name="contact_align">
+                                <option value="left" {{ 'selected' if card_data.get('contact_align') == 'left' }}>Left</option>
+                                <option value="center" {{ 'selected' if card_data.get('contact_align') == 'center' }}>Center</option>
+                                <option value="right" {{ 'selected' if card_data.get('contact_align') == 'right' }}>Right</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Advanced Options -->
             <div class="form-card">
                 <h3 class="section-title">
@@ -314,7 +485,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="font_family" class="form-label fw-semibold">Font Style</label>
+                        <label for="font_family" class="form-label fw-semibold">Overall Font Style</label>
                         <select class="form-select" id="font_family" name="font_family">
                             <option value="sans_modern" {{ 'selected' if card_data.font_family == 'sans_modern' }}>Modern Sans-Serif</option>
                             <option value="serif_elegant" {{ 'selected' if card_data.font_family == 'serif_elegant' }}>Elegant Serif</option>

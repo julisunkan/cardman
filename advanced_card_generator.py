@@ -114,10 +114,109 @@ class AdvancedCardGenerator:
                 except:
                     continue
             
-            # Ultimate fallback
-            return ImageFont.load_default()
+            # Ultimate fallback with better size
+            try:
+                return ImageFont.load_default().font_variant(size=size)
+            except:
+                return ImageFont.load_default()
         except:
             return ImageFont.load_default()
+
+    def get_text_settings(self, card_data, element_type):
+        """Get customizable text settings for different elements"""
+        # Default text settings
+        defaults = {
+            'name': {
+                'size': card_data.get('name_size', 72),
+                'font': card_data.get('name_font', 'sans_modern'),
+                'weight': 'bold' if card_data.get('name_bold', True) else 'normal',
+                'italic': card_data.get('name_italic', False),
+                'align': card_data.get('name_align', 'left')
+            },
+            'title': {
+                'size': card_data.get('title_size', 32),
+                'font': card_data.get('title_font', 'sans_modern'),
+                'weight': 'bold' if card_data.get('title_bold', False) else 'normal',
+                'italic': card_data.get('title_italic', False),
+                'align': card_data.get('title_align', 'left')
+            },
+            'company': {
+                'size': card_data.get('company_size', 28),
+                'font': card_data.get('company_font', 'sans_modern'),
+                'weight': 'bold' if card_data.get('company_bold', False) else 'normal',
+                'italic': card_data.get('company_italic', False),
+                'align': card_data.get('company_align', 'left')
+            },
+            'contact': {
+                'size': card_data.get('contact_size', 24),
+                'font': card_data.get('contact_font', 'sans_modern'),
+                'weight': 'normal',
+                'italic': card_data.get('contact_italic', False),
+                'align': card_data.get('contact_align', 'left')
+            }
+        }
+        
+        return defaults.get(element_type, defaults['contact'])
+
+    def draw_formatted_text(self, draw, text, x, y, settings, colors, max_width=None):
+        """Draw text with formatting options"""
+        if not text:
+            return y
+            
+        # Get font
+        font = self.get_professional_font(
+            settings['font'], 
+            settings['size'], 
+            settings['weight']
+        )
+        
+        # Handle text wrapping if max_width is specified
+        if max_width:
+            lines = []
+            words = text.split()
+            current_line = []
+            
+            for word in words:
+                test_line = ' '.join(current_line + [word])
+                bbox = draw.textbbox((0, 0), test_line, font=font)
+                line_width = bbox[2] - bbox[0]
+                
+                if line_width <= max_width:
+                    current_line.append(word)
+                else:
+                    if current_line:
+                        lines.append(' '.join(current_line))
+                        current_line = [word]
+                    else:
+                        lines.append(word)  # Single word too long, add anyway
+            
+            if current_line:
+                lines.append(' '.join(current_line))
+        else:
+            lines = [text]
+        
+        # Draw each line
+        line_height = settings['size'] + 10
+        current_y = y
+        
+        for line in lines:
+            # Calculate alignment
+            if settings['align'] == 'center':
+                bbox = draw.textbbox((0, 0), line, font=font)
+                text_width = bbox[2] - bbox[0]
+                text_x = x + (max_width - text_width) // 2 if max_width else x
+            elif settings['align'] == 'right':
+                bbox = draw.textbbox((0, 0), line, font=font)
+                text_width = bbox[2] - bbox[0]
+                text_x = x + max_width - text_width if max_width else x
+            else:  # left align
+                text_x = x
+            
+            # Draw text
+            draw.text((text_x, current_y), line, fill=colors['text'], font=font)
+            current_y += line_height
+        
+        return current_y
 
     def create_gradient(self, width, height, start_color, end_color, direction='horizontal'):
         """Create advanced gradient backgrounds"""
@@ -224,37 +323,43 @@ END:VCARD"""
                 draw.ellipse([x, y, x + pattern_size//2, y + pattern_size//2], 
                            fill=colors['light'] + f'{pattern_alpha:02x}')
         
-        # Executive name with metallic effect
-        name_font = self.get_professional_font('serif_elegant', 58, 'bold')
+        # Executive name with customizable formatting
+        name_settings = self.get_text_settings(card_data, 'name')
         name_text = card_data.get('name', '').upper()
         name_x, name_y = self.safe_zone, 100
         
-        # Metallic text effect
+        # Metallic text effect with custom font
+        name_font = self.get_professional_font(name_settings['font'], name_settings['size'], name_settings['weight'])
         shadow_offset = 2
         draw.text((name_x + shadow_offset, name_y + shadow_offset), name_text, 
                  fill=colors['dark'], font=name_font)
         draw.text((name_x, name_y), name_text, fill='white', font=name_font)
         
-        # Executive title with prestige
-        title_font = self.get_professional_font('sans_modern', 26, 'bold')
-        title_y = name_y + 70
-        draw.text((name_x, title_y), card_data.get('job_title', ''), 
-                 fill=colors['primary'], font=title_font)
+        # Executive title with custom formatting
+        title_settings = self.get_text_settings(card_data, 'title')
+        title_y = name_y + name_settings['size'] + 20
+        self.draw_formatted_text(draw, card_data.get('job_title', ''), 
+                               name_x, title_y, title_settings, colors)
         
-        # Company with authority
-        company_font = self.get_professional_font('serif_elegant', 24)
-        company_y = title_y + 40
-        draw.text((name_x, company_y), card_data.get('company', ''), 
-                 fill=colors['text'], font=company_font)
+        # Company with custom formatting
+        company_settings = self.get_text_settings(card_data, 'company')
+        company_y = title_y + title_settings['size'] + 15
+        self.draw_formatted_text(draw, card_data.get('company', ''), 
+                               name_x, company_y, company_settings, colors)
         
         # Professional divider with gradient
         divider_y = company_y + 50
         divider_gradient = self.create_gradient(280, 4, colors['metallic'], colors['accent'])
         img.paste(divider_gradient, (name_x, divider_y))
         
-        # Executive contact grid
-        contact_font = self.get_professional_font('sans_modern', 20)
-        contact_y = divider_y + 25
+        # Executive contact grid with custom formatting
+        contact_settings = self.get_text_settings(card_data, 'contact')
+        contact_y = company_y + company_settings['size'] + 30
+        
+        # Professional divider with gradient
+        divider_gradient = self.create_gradient(280, 4, colors['metallic'], colors['accent'])
+        img.paste(divider_gradient, (name_x, contact_y))
+        contact_y += 25
         
         contacts = [
             ('EMAIL', card_data.get('email', '')),
@@ -267,8 +372,11 @@ END:VCARD"""
                 # Label in small caps
                 label_font = self.get_professional_font('sans_modern', 14, 'bold')
                 draw.text((name_x, contact_y), label, fill=colors['accent'], font=label_font)
-                draw.text((name_x, contact_y + 18), value, fill=colors['text'], font=contact_font)
-                contact_y += 50
+                
+                # Value with custom formatting
+                contact_y_value = contact_y + 18
+                self.draw_formatted_text(draw, value, name_x, contact_y_value, contact_settings, colors)
+                contact_y += contact_settings['size'] + 25
         
         # Premium QR code if enabled
         if card_data.get('include_qr', False):
@@ -742,10 +850,23 @@ END:VCARD"""
         available_width = page_width - (2 * margin)
         available_height = page_height - (2 * margin)
         
+        # Ensure image fits within available space with proper aspect ratio
+        img_aspect = card_img.width / card_img.height
+        available_aspect = available_width / available_height
+        
+        if img_aspect > available_aspect:
+            # Image is wider, scale by width
+            final_width = available_width * 0.95  # 95% of available space for safety
+            final_height = final_width / img_aspect
+        else:
+            # Image is taller, scale by height
+            final_height = available_height * 0.95  # 95% of available space for safety
+            final_width = final_height * img_aspect
+        
         # Create ReportLab image with proper sizing
         rl_img = RLImage(img_buffer, 
-                        width=available_width, 
-                        height=available_height)
+                        width=final_width, 
+                        height=final_height)
         
         # Build PDF
         story = [rl_img]
