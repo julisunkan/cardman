@@ -472,12 +472,28 @@ END:VCARD"""
         if card_data.get('logo_path') and os.path.exists(card_data['logo_path']):
             try:
                 logo = Image.open(card_data['logo_path'])
-                logo.thumbnail((120, 120), Image.Resampling.LANCZOS)
                 
-                # Position logo in top-right corner
-                logo_x = self.card_width - logo.width - self.margin
-                logo_y = self.margin
+                # Make logo larger and more prominent
+                max_logo_size = (150, 150)
+                logo.thumbnail(max_logo_size, Image.Resampling.LANCZOS)
                 
+                # Better positioning - more visible in top-right corner
+                logo_margin = 30  # Reduce margin for better visibility
+                logo_x = self.card_width - logo.width - logo_margin
+                logo_y = logo_margin
+                
+                # Add subtle white background for better contrast
+                logo_bg = Image.new('RGBA', (logo.width + 10, logo.height + 10), (255, 255, 255, 200))
+                logo_bg_x = logo_x - 5
+                logo_bg_y = logo_y - 5
+                
+                # Paste background first, then logo
+                if logo_bg.mode == 'RGBA':
+                    card_img.paste(logo_bg, (logo_bg_x, logo_bg_y), logo_bg)
+                else:
+                    card_img.paste(logo_bg, (logo_bg_x, logo_bg_y))
+                
+                # Paste the logo
                 if logo.mode == 'RGBA':
                     card_img.paste(logo, (logo_x, logo_y), logo)
                 else:
