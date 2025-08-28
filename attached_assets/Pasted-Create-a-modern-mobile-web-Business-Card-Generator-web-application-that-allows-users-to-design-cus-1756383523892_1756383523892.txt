@@ -1,0 +1,66 @@
+Create a modern, mobile-web Business Card Generator web application that allows users to design, customize, and export professional business cards. The app should have a native mobile app feel with intuitive touch interactions.
+
+Core Features Required
+1. Card Creation & Customization
+Personal Information Form: Name, job title, company, email, phone, website, address
+Template Selection: 13+ professional templates (Modern, Classic, Creative, Elegant, Tech, Corporate, Artistic, Minimal, Bold, Vintage, Geometric, Gradient, Executive)
+Design Options: 15+ color schemes, 12+ font families, text alignment options
+Logo Upload: Support PNG, JPG, GIF, SVG files up to 16MB
+Social Media Integration: Add 1 social platform (LinkedIn, Twitter, Facebook, Instagram, GitHub)
+QR Code Generation: Optional vCard QR code for contact sharing
+2. Export Functionality
+Multiple Formats: PNG (high-res), PDF (standard), PDF (print-ready with CMYK), HTML (interactive digital card)
+High Quality Output: 300 DPI for professional printing
+Batch Processing: CSV upload for generating multiple cards as ZIP archive
+Preview System: Real-time card preview before export
+3. Mobile-First UI/UX Design
+Native App Feel: Mobile status bar, app header with icon, bottom navigation
+Touch-Friendly Interface: Large buttons (min 44px), swipe gestures, haptic feedback
+Progressive Web App: PWA-ready with app manifest and service worker
+Responsive Design: Works seamlessly on mobile, tablet, and desktop
+Modern Animations: Smooth transitions, loading states, micro-interactions
+Technical Architecture
+Backend Requirements
+Framework: Flask (Python) with Jinja2 templating
+Image Processing: PIL/Pillow for card generation and manipulation
+PDF Generation: ReportLab for creating print-ready documents
+QR Code Library: qrcode package for contact information encoding
+File Handling: Secure upload system with validation and sanitization
+Session Management: Flask sessions for user data persistence
+Frontend Requirements
+CSS Framework: Bootstrap 5 with custom mobile-optimized overrides
+JavaScript: Vanilla JS for form validation, template selection, file handling
+Icons: Font Awesome 6 for consistent iconography
+Typography: Inter font family for modern, readable interface
+Mobile Features: Touch events, vibration API, viewport optimization
+4. Export System
+PNG Export: High-resolution bitmap for digital use
+PDF Export: Vector-based for scaling and printing
+Print-Ready PDF: CMYK color mode, proper bleed areas
+HTML Export: Interactive card with click-to-copy contact info
+Batch Export: ZIP file with multiple cards from CSV data
+Security & Performance Considerations
+Security Features
+Input sanitization for all form fields
+Secure file upload validation (file type, size, content)
+Session management with CSRF protection
+Safe filename handling with werkzeug.secure_filename
+Performance Optimizations
+Image processing in background threads
+Caching for generated previews
+Compressed CSS/JS assets
+Lazy loading for template previews
+Progressive image enhancement
+Deployment Requirements
+Environment: Python 3.9+ with Flask
+Dependencies: PIL, ReportLab, qrcode, Flask, Werkzeug
+Storage: Local filesystem for temporary files
+Configuration: Environment variables for secrets
+Scaling: Ready for gunicorn deployment
+User Experience Flow
+Landing: Mobile app-style interface with clear call-to-action
+Form Filling: Progressive disclosure with sectioned forms
+Template Selection: Visual gallery with touch-friendly cards
+Preview: Instant card preview with editing options
+Export: Multiple download options with format guidance
+Batch Processing: CSV upload with progress indicators
